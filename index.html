@@ -80,7 +80,7 @@
       // NOTE: This requires email confirmations OFF or a valid session returned.
 
       // Uncomment ONLY if you chose Option B and created the INSERT policy.
-      /*
+      
       const userId = signData.user?.id;
       const { error: insErr } = await sb.from("users").insert([{
         id: userId,
@@ -93,7 +93,7 @@
         showMsg("Profile insert failed: " + insErr.message);
         return;
       }
-      */
+      
 
       // Handle confirm-email UX:
       const confirmed = !!signData.session; // if confirmations OFF, session exists
@@ -108,3 +108,4 @@
   </script>
 </body>
 </html>
+
