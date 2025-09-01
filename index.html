@@ -63,8 +63,8 @@
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
   <script>
     // TODO: Replace with your Supabase project details
-    const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
+    const SUPABASE_URL = process.env.url;
+    const SUPABASE_ANON_KEY = process.env.anon;
 
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -121,3 +121,4 @@
   </script>
 </body>
 </html>
+
