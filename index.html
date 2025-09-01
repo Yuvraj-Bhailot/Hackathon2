@@ -210,6 +210,13 @@
             const confirmPassword = document.getElementById('confirm-password').value;
             const terms = document.getElementById('terms').checked;
 
+            async function signUpNewUser() {
+              const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+              })
+            }
+
             // Basic validation
             if (!name || !email || !password || !confirmPassword) {
                 alert('Please fill in all fields');
@@ -234,12 +241,7 @@
             // Show success message
             document.getElementById('success-message').classList.remove('hidden');
             
-            // Reset form after 2 seconds
-            setTimeout(() => {
-                this.reset();
-                document.getElementById('success-message').classList.add('hidden');
-            }, 2000);
-        });
+            
 
         // Input validation styling
         const inputs = document.querySelectorAll('input');
@@ -258,7 +260,9 @@
                 this.classList.remove('border-red-300', 'border-green-300');
             });
         });
+            
     </script>
 </body>
 </html>
+
 
