@@ -1,0 +1,24 @@
+name: CI with Secrets
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Use your secrets
+      - name: Run app with secrets
+        run: |
+          echo "API Key is $API_KEY"
+          echo "Anon Key is $ANON_KEY"
+        env:
+          API_KEY: ${{ secrets.url }}
+          ANON_KEY: ${{ secrets.anon }}
