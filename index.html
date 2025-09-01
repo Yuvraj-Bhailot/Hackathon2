@@ -137,7 +137,15 @@
             emailError.classList.add('hidden');
             passwordError.classList.add('hidden');
             
-            let isValid = true;
+            async function signUpNewUser() {
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                emailRedirectTo: 'www.google.com',
+                },
+            })
+            }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -187,4 +195,5 @@
     </script>
 </body>
 </html>
+
 
