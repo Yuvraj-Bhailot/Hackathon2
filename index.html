@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodLink AI - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Style for hamburger menu icon */
+  .hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1001;
+  }
+
+  .hamburger div {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  .sidebar a {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    transition: 0.2s;
+  }
+
+  .sidebar a:hover {
+    background-color: #575757;
+    color: white;
+  }
+
+  /* Close button inside the sidebar */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Optional: when sidebar is open, add overlay effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+   <nav class="navbar">
+     <div class="logo">    🍽️ Hungry? Don't worry!</div>
+    <ul class="nav-links">
+      <li><a href="signup.html" class="btn">Sign Up</a></li>
+      </ul>
+      </nav>
+
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donor History</a>
+  <a href="contact.html">Contact</a>
+
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<script>
+  function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <h1 class="gradient-text">From Waste to Welfare</h1>
+      <p>Connecting restaurants with NGOs to donate surplus food and serve those in need.</p>
+     <div class="hero-buttons">
+  <button class="primary-btn" onclick="location.href='donor.html'">Donate Now</button>
+  <button class="secondary-btn" onclick="location.href='ngo.html'">Join as NGO</button>
+</div>
+
+    </div>
+    <div class="hero-img">
+      <img src="https://serudsindia.org/wp-content/uploads/2021/02/Donate-to-Help-Fight-Hunger.png" alt="Food Donation">
+      <img src="https://thumbs.dreamstime.com/b/concept-food-donation-big-providing-free-to-hungry-needy-people-163400963.jpg" alt="Food Donation">
+    </div>
+  </section>
+
+  <!-- Options Section -->
+  <section class="options" id="options">
+    <h2>What would you like to do?</h2>
+    <div class="options-grid">
+      <div class="card">
+        <h3>🍛 Donate Food</h3>
+        <p>Restaurants and individuals can register surplus food donations.</p>
+      </div>
+      <div class="card">
+        <h3>🏢 Find NGOs</h3>
+        <p>NGOs can view nearby donations and request pickups.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Track Impact</h3>
+        <p>See meals served, food saved, and carbon footprint reduced.</p>
+      </div>
+      <div class="card">
+        <h3>📞 Contact Us</h3>
+        <p>Reach out for partnerships or queries via chatbot or form.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>🍽️ Hungry? Don't worry! © 2025</p>
+  </footer>
+
+</body>
+</html>
+
+
+  
