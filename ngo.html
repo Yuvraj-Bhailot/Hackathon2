@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGO Requests / Donor View</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+    body { background: #f0f4f8; padding: 0; }
+    
+    h1 { text-align: center; margin-bottom: 30px; color: #4CAF50; }
+    
+    /* Filters Section */
+    .filters {
+        max-width: 1000px;
+        margin: 0 auto 30px auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+    .filters select, .filters input {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        font-size: 16px;
+    }
+    .filters button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #4CAF50;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .filters button:hover { background: #45a049; }
+
+    /* Card Grid */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    /* Card Design */
+    .card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+    }
+
+    .card h3 { color: #333; margin-bottom: 10px; }
+    .card p { margin-bottom: 8px; color: #555; }
+    .status {
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 12px;
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+    .status.pending { background: #ffecb3; color: #ff9800; }
+    .status.completed { background: #c8e6c9; color: #2e7d32; }
+    .status.expired { background: #ffcdd2; color: #c62828; }
+
+    .card button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        background: #4CAF50;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+    .card button:hover { background: #45a049; }
+
+    @media(max-width: 600px) {
+        .filters { flex-direction: column; align-items: center; }
+    }
+    /* Style for hamburger menu icon */
+  .hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1001;
+  }
+
+  .hamburger div {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  .sidebar a {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    transition: 0.2s;
+  }
+
+  .sidebar a:hover {
+    background-color: #575757;
+    color: white;
+  }
+
+  /* Close button inside the sidebar */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Optional: when sidebar is open, add overlay effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+   <nav class="navbar">
+     <div class="logo">🍽️ Hungry? Don't worry!</div>
+      </nav>
+
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donorn History</a>
+  <a href="contact.html">Contact</a>
+
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<script>
+  function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+<h1>NGO Requests / Donor View</h1>
+
+<!-- Filters -->
+<div class="filters">
+    <select id="foodTypeFilter">
+        <option value="">All Food Types</option>
+        <option value="Cooked">Cooked</option>
+        <option value="Raw">Raw</option>
+    </select>
+
+    <select id="vegFilter">
+        <option value="">Veg / Non-Veg</option>
+        <option value="Veg">Veg</option>
+        <option value="Non-Veg">Non-Veg</option>
+    </select>
+
+    <input type="text" id="tagsFilter" placeholder="Tags (e.g., Rice, Dal)">
+    
+    <button onclick="applyFilters()">Filter</button>
+</div>
+
+<!-- Cards Container -->
+<div class="card-container" id="cardContainer">
+    <!-- Example Card -->
+    <div class="card">
+        <h3>Rice Donation</h3>
+        <p><strong>Donor:</strong> John Doe</p>
+        <p><strong>Quantity:</strong> 5 kg</p>
+        <p><strong>Prepared:</strong> 2025-09-05 10:00 AM</p>
+        <p><strong>Expiry:</strong> 2025-09-05 18:00 PM</p>
+        <span class="status pending">Pending</span>
+        <button onclick="acceptRequest(this)">Accept Request</button>
+    </div>
+
+    <div class="card">
+        <h3>Vegetable Pack</h3>
+        <p><strong>Donor:</strong> Jane Smith</p>
+        <p><strong>Quantity:</strong> 10 kg</p>
+        <p><strong>Prepared:</strong> 2025-09-05 09:30 AM</p>
+        <p><strong>Expiry:</strong> 2025-09-05 14:00 PM</p>
+        <span class="status expired">Expired</span>
+        <button disabled>Accept Request</button>
+    </div>
+
+    <div class="card">
+        <h3>Dal Donation</h3>
+        <p><strong>Donor:</strong> Rajesh Kumar</p>
+        <p><strong>Quantity:</strong> 7 kg</p>
+        <p><strong>Prepared:</strong> 2025-09-05 11:00 AM</p>
+        <p><strong>Expiry:</strong> 2025-09-05 17:00 PM</p>
+        <span class="status completed">Completed</span>
+        <button disabled>Accepted</button>
+    </div>
+</div>
+
+<script>
+function acceptRequest(btn){
+    btn.innerText = 'Accepted';
+    btn.disabled = true;
+    btn.style.background = '#2e7d32';
+    alert('You have accepted this request!');
+}
+
+function applyFilters(){
+    const foodType = document.getElementById('foodTypeFilter').value.toLowerCase();
+    const veg = document.getElementById('vegFilter').value.toLowerCase();
+    const tags = document.getElementById('tagsFilter').value.toLowerCase();
+
+    const cards = document.querySelectorAll('.card-container .card');
+
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        if(
+            (foodType === '' || text.includes(foodType)) &&
+            (veg === '' || text.includes(veg)) &&
+            (tags === '' || text.includes(tags))
+        ){
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
