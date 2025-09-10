@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Contact Us | FoodBridge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Simple Accordion Animation */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .accordion-content.show {
+      max-height: 200px;
+    }
+  /* Style for hamburger menu icon */
+  .hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1001;
+  }
+
+  .hamburger div {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  .sidebar a {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    transition: 0.2s;
+  }
+
+  .sidebar a:hover {
+    background-color: #575757;
+    color: white;
+  }
+
+  /* Close button inside the sidebar */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Optional: when sidebar is open, add overlay effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+   <nav class="navbar">
+     <div class="logo">🍽️ Hungry? Don't worry!</div>
+      </nav>
+
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donor History</a>
+  <a href="contact.html">Contact</a>
+
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Contact Hero -->
+  <section class="text-center py-12 bg-gradient-to-r from-red-100 to-indigo-100">
+    <h2 class="text-4xl font-bold text-gray-800 mb-2">Get in Touch</h2>
+    <p class="text-gray-600">Have questions, suggestions, or want to collaborate? We’d love to hear from you!</p>
+  </section>
+
+  <!-- Main Section -->
+  <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- FAQ Section -->
+    <div>
+      <h3 class="text-2xl font-bold text-indigo-600 mb-4">❓ Frequently Asked Questions</h3>
+      
+      <div class="border rounded-lg mb-3">
+        <button onclick="toggleAccordion(1)" class="w-full text-left p-4 font-semibold">How does 🍽️ Hungry? Don't worry! work?</button>
+        <div id="faq1" class="accordion-content px-4 pb-4 text-gray-600">
+          Restaurants donate food, NGOs claim it, and volunteers distribute it to those in need.
+        </div>
+      </div>
+
+      <div class="border rounded-lg mb-3">
+        <button onclick="toggleAccordion(2)" class="w-full text-left p-4 font-semibold">Is it free to use?</button>
+        <div id="faq2" class="accordion-content px-4 pb-4 text-gray-600">
+          Yes, 🍽️ Hungry? Don't worry! is completely free for both donors and NGOs.
+        </div>
+      </div>
+
+      <div class="border rounded-lg mb-3">
+        <button onclick="toggleAccordion(3)" class="w-full text-left p-4 font-semibold">Where is AI used?</button>
+        <div id="faq3" class="accordion-content px-4 pb-4 text-gray-600">
+          AI helps recommend NGOs closest to food donors and suggests which donations to prioritize based on expiry.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div>
+      <h3 class="text-2xl font-bold text-red-600 mb-4">📬 Send us a Message</h3>
+      <form id="contactForm" class="bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-4">
+        <input type="text" placeholder="Your Name" class="border p-3 rounded-lg" required>
+        <input type="email" placeholder="Your Email" class="border p-3 rounded-lg" required>
+        <textarea placeholder="Your Message" rows="4" class="border p-3 rounded-lg" required></textarea>
+        <button type="submit" class="bg-gradient-to-r from-red-500 to-indigo-600 text-white font-bold py-3 rounded-lg hover:opacity-90 transition">Submit</button>
+        <p id="successMsg" class="text-green-600 font-medium hidden"> Your message has been sent!</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Chatbot Placeholder -->
+  <div id="chatbot" class="fixed bottom-5 right-5">
+    <button onclick="toggleChatbot()" class="bg-gradient-to-r from-red-500 to-indigo-600 text-white px-5 py-3 rounded-full shadow-lg">💬 Chat with AI</button>
+    <div id="chatbox" class="hidden bg-white w-72 h-96 shadow-lg rounded-lg p-4 mt-3">
+      <h4 class="font-bold mb-2">AI Assistant</h4>
+      <div class="h-64 overflow-y-auto border p-2 mb-2" id="chatLog">Hello 👋 How can I help?</div>
+      <input type="text" id="chatInput" placeholder="Type message..." class="border p-2 w-full rounded">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>🍽️ Hungry? Don't worry! © 2025</p>
+  </footer>
+
+  <script>
+
+    function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+    // Accordion
+    function toggleAccordion(id) {
+      let content = document.getElementById("faq" + id);
+      content.classList.toggle("show");
+    }
+
+    // Contact Form
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("successMsg").classList.remove("hidden");
+      setTimeout(() => {
+        document.getElementById("successMsg").classList.add("hidden");
+      }, 4000);
+    });
+
+    // Chatbot toggle
+    function toggleChatbot() {
+      document.getElementById("chatbox").classList.toggle("hidden");
+    }
+  </script>
+</body>
+</html>
