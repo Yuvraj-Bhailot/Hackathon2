@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+  <title>Signup | FoodBridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+  /* Style for hamburger menu icon */
+  .hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1001;
+  }
+
+  .hamburger div {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  .sidebar a {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    transition: 0.2s;
+  }
+
+  .sidebar a:hover {
+    background-color: #575757;
+    color: white;
+  }
+
+  /* Close button inside the sidebar */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Optional: when sidebar is open, add overlay effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+   <nav class="navbar">
+     <div class="logo">🍽️ Hungry? Don't worry!</div>
+      </nav>
+
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donor History</a>
+  <a href="contact.html">Contact</a>
+
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-96">
+      <h2 class="text-2xl font-bold text-center text-indigo-600 mb-6">Create Account</h2>
+      
+      <form id="signupForm" class="space-y-4">
+        <input type="text" id="name" placeholder="Full Name" required class="w-full border p-2 rounded">
+        <input type="email" id="email" placeholder="Email" required class="w-full border p-2 rounded">
+        <input type="password" id="password" placeholder="Password" required class="w-full border p-2 rounded">
+        
+        <!-- Role Selection -->
+        <select id="role" required class="w-full border p-2 rounded">
+          <option value="">Select Role</option>
+          <option value="donor">Donor</option>
+          <option value="ngo">NGO</option>
+        </select>
+        
+        <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-indigo-600 text-white px-4 py-2 rounded-lg">Create Account</button>
+      </form>
+
+      <p class="text-sm text-center mt-4">Already have an account? 
+        <a href="login.html" class="text-indigo-600 font-bold">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+      function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+        const signupForm = document.getElementById('signupForm');
+        signupForm.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const role = document.getElementById('role').value;
+
+            if(role === 'donor'){
+                window.location.href = 'donor.html'; // redirect to donor page
+            } else if(role === 'ngo'){
+                window.location.href = 'ngo.html'; // redirect to NGO page
+            } else {
+                alert('Please select a role.');
+            }
+        });
+    </script>
+
+</body>
+</html>
