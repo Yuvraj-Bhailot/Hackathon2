@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate Food</title>
+  <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+    body {
+        background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    .form-container {
+        background: #fff;
+        display:block;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        max-width: 600px;
+        width: 100%;
+        transition: transform 0.3s;
+    }
+    .form-container:hover { transform: translateY(-5px); }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #4CAF50;
+    }
+    .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+    input[type="text"], input[type="number"], input[type="datetime-local"], select, textarea {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: border 0.3s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #4CAF50; }
+    textarea { resize: none; }
+    .radio-group {
+        display: flex;
+        gap: 20px;
+    }
+    .radio-group input { margin-right: 5px; }
+    .file-upload {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .file-upload img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        object-fit: cover;
+        display: none;
+        border: 2px solid #4CAF50;
+    }
+    button {
+        width: 100%;
+        padding: 15px;
+        background: #4CAF50;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+    button:hover { background: #45a049; }
+
+    /* Style for hamburger menu icon */
+  .hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1001;
+  }
+
+  .hamburger div {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  .sidebar a {
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+    transition: 0.2s;
+  }
+
+  .sidebar a:hover {
+    background-color: #575757;
+    color: white;
+  }
+
+  /* Close button inside the sidebar */
+  .sidebar .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Optional: when sidebar is open, add overlay effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+   <nav class="navbar">
+     <div class="logo">🍽️ Hungry? Don't worry!</div>
+      </nav>
+
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donor History</a>
+  <a href="contact.html">Contact</a>
+
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<script>
+  function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+<div class="form-container">
+    <h2>Donate Your Food</h2>
+    <form id="donorForm">
+        <div class="form-group">
+            <label for="foodType">Food Type</label>
+            <select id="foodType" required>
+                <option value="">Select Type</option>
+                <option value="Cooked">Cooked</option>
+                <option value="Raw">Raw</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tags (e.g., Rice, Dal)</label>
+            <input type="text" id="tags" placeholder="Enter Tags" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" rows="3" placeholder="Describe your food" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" placeholder="Enter quantity" required>
+        </div>
+
+        <div class="form-group">
+            <label for="unit">Unit</label>
+            <select id="unit" required>
+                <option value="">Select Unit</option>
+                <option value="kg">Kg</option>
+                <option value="plates">Plates</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Veg / Non-Veg</label>
+            <div class="radio-group">
+                <label><input type="radio" name="vegNonVeg" value="Veg" required> Veg</label>
+                <label><input type="radio" name="vegNonVeg" value="Non-Veg"> Non-Veg</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="preparedTime">Prepared Time</label>
+            <input type="datetime-local" id="preparedTime" required>
+        </div>
+
+        <div class="form-group">
+            <label for="expiryTime">Expiry Time</label>
+            <input type="datetime-local" id="expiryTime" required>
+        </div>
+
+        <div class="form-group">
+            <label>Upload Food Photo</label>
+            <div class="file-upload">
+                <input type="file" id="foodPhoto" accept="image/*">
+                <img id="preview" alt="Image Preview">
+            </div>
+        </div>
+
+        <button type="submit">Submit Donation</button>
+    </form>
+</div>
+
+<script>
+    const foodPhoto = document.getElementById('foodPhoto');
+    const preview = document.getElementById('preview');
+
+    foodPhoto.addEventListener('change', function() {
+        const file = this.files[0];
+        if(file){
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    });
+
+    const form = document.getElementById('donorForm');
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        const prepared = new Date(document.getElementById('preparedTime').value);
+        const expiry = new Date(document.getElementById('expiryTime').value);
+
+        if(expiry <= prepared){
+            alert('Expiry Time must be after Prepared Time.');
+            return;
+        }
+
+        alert('Donation submitted successfully!');
+        form.reset();
+        preview.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
