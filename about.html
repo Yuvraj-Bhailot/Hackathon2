@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About | FoodBridge</title>
+    <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    /* Style for hamburger menu icon */
+    .hamburger {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      cursor: pointer;
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1001;
+    }
+
+    .hamburger div {
+      height: 4px;
+      background-color: #333;
+      border-radius: 2px;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 10px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #ddd;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #575757;
+      color: white;
+    }
+
+    /* Close button inside the sidebar */
+    .sidebar .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 30px;
+      text-decoration: none;
+      color: white;
+    }
+
+    /* Optional: overlay effect when sidebar is open */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0,0,0,0.3);
+      z-index: 999;
+      display: none;
+    }
+
+    /* About Page Section */
+    .about-section {
+      max-width: 900px;
+      margin: 100px auto 40px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .about-section h1 {
+      font-size: 2.5rem;
+      color: #4f46e5;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .about-section img {
+      max-width: 300px;
+      margin-top: 20px;
+      border-radius: 15px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Hamburger icon -->
+<div class="hamburger" onclick="openSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar -->
+<nav class="navbar">
+     <div class="logo">🍽️ Hungry? Don't worry!</div>
+     </nav>
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="donor.html">Donor</a>
+  <a href="ngo.html">Ngo</a>
+  <a href="profile.html">Profile</a>
+  <a href="donor_history.html">Donor History</a>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<!-- About Section -->
+<section class="about-section">
+  <h1>About 🍽️ Hungry? Don't worry!</h1>
+  <p>
+     Hungry? Don't worry! is a global platform connecting Restaurants with NGOs to reduce food waste
+    and fight hunger. By leveraging technology, we ensure that surplus food is 
+    redirected from homes, restaurants, and events to people who need it the most.
+  </p>
+  <p>
+    Our mission is simple: <strong>From Waste to Welfare</strong>.  
+    Every donation makes a difference, and every meal brings hope.
+  </p>
+  <div class="hero-img">
+  <img src="https://thumbs.dreamstime.com/b/donate-to-poor-homeless-still-seen-society-concept-charity-food-134554371.jpg" alt="Donating food">
+  <img src="https://thumbs.dreamstime.com/b/volunteers-donate-food-to-help-homeless-hungry-people-139435559.jpg" alt="Donating food">
+</div>
+</section>
+
+<script>
+  function openSidebar() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("overlay").style.display = "block";
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+  <!-- Footer -->
+  <footer>
+    <p>🍽️ Hungry? Don't worry! © 2025</p>
+  </footer>
+</body>
+</html>
