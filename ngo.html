@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Requests - Donor View | FoodCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e74c3c;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #e74c3c;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #e74c3c;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #e74c3c;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .back-button:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            gap: 4px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: #2c3e50;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Mobile Navigation */
+        .nav-menu.mobile-active {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            padding: 2rem;
+            gap: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+
+        .page-subtitle {
+            text-align: left;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e74c3c;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .filter-select, .filter-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Cards Section */
+        .cards-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .request-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .request-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .request-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-expired {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .card-details {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .urgency-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .urgency-high {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+
+        .urgency-medium {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+
+        .urgency-low {
+            background: #e8f5e8;
+            border-left-color: #4caf50;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-accept {
+            flex: 1;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accept:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-accept:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-details {
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-details:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Food Type Badges */
+        .food-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        .type-cooked {
+            background: #ffeaa7;
+            color: #2d3436;
+        }
+
+        .type-raw {
+            background: #81ecec;
+            color: #2d3436;
+        }
+
+        .type-veg {
+            background: #55efc4;
+            color: #2d3436;
+        }
+
+        .type-non-veg {
+            background: #fd79a8;
+            color: #2d3436;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #4caf50;
+        }
+
+        .notification.error {
+            background: #f44336;
+        }
+
+        .notification.info {
+            background: #2196f3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .nav-menu.mobile-active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-section {
+                grid-template-columns: 1fr;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .filter-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a class="logo" onclick="navigateToHome()">
+                🍽️ FoodCare
+            </a>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a onclick="navigateTo('home')">Home</a></li>
+                    <li><a onclick="navigateTo('about')">About</a></li>
+                    <li><a onclick="navigateTo('donor')">Donor</a></li>
+                    <li><a onclick="navigateTo('ngo')">NGO</a></li>
+                    <li><a onclick="navigateTo('profile')">Profile</a></li>
+                    <li><a onclick="navigateTo('contact')">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header fade-in-up">
+            <h1 class="page-title">NGO Food Requests</h1>
+            <a href="#" class="back-button" onclick="goBack()">
+                ← Back to Dashboard
+            </a>
+        </div>
+        <p class="page-subtitle fade-in-up">Connect with NGOs and help feed those in need</p>
+
+        <!-- Statistics -->
+        <section class="stats-section fade-in-up">
+            <div class="stat-card">
+                <span class="stat-number" id="totalRequests">0</span>
+                <span class="stat-label">Total Requests</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="pendingRequests">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="completedRequests">0</span>
+                <span class="stat-label">Completed</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="yourContributions">0</span>
+                <span class="stat-label">Your Contributions</span>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters-section fade-in-up">
+            <h2 class="filters-title">
+                🔍 Filter Requests
+            </h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Food Type</label>
+                    <select class="filter-select" id="foodTypeFilter">
+                        <option value="">All Food Types</option>
+                        <option value="cooked">Cooked Food</option>
+                        <option value="raw">Raw Ingredients</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Dietary Preference</label>
+                    <select class="filter-select" id="vegFilter">
+                        <option value="">All Options</option>
+                        <option value="veg">Vegetarian</option>
+                        <option value="non-veg">Non-Vegetarian</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Search Tags</label>
+                    <input type="text" class="filter-input" id="tagsFilter" placeholder="e.g., Rice, Dal, Vegetables">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Urgency Level</label>
+                    <select class="filter-select" id="urgencyFilter">
+                        <option value="">All Levels</option>
+                        <option value="high">High Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="low">Low Priority</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-primary" onclick="applyFilters()">
+                    🔍 Apply Filters
+                </button>
+                <button class="btn btn-secondary" onclick="clearFilters()">
+                    🔄 Reset
+                </button>
+            </div>
+        </section>
+
+        <!-- Request Cards -->
+        <section class="cards-section" id="cardsContainer">
+            <!-- Cards will be dynamically loaded here -->
+        </section>
+    </main>
+
+    <script>
+        // Sample data for NGO requests
+        const sampleRequests = [
+            {
+                id: 1,
+                title: "Rice and Dal for 100 People",
+                ngo: "Hope Foundation",
+                location: "Downtown Shelter",
+                quantity: "25 kg Rice, 15 kg Dal",
+                foodType: "cooked",
+                dietType: "veg",
+                urgency: "high",
+                timeNeeded: "Today 6:00 PM",
+                expiry: "2025-09-12 18:00",
+                status: "pending",
+                beneficiaries: 100,
+                contact: "+91 98765 43210",
+                tags: ["rice", "dal", "urgent", "dinner"],
+                description: "Emergency food requirement for homeless shelter. Need cooked rice and dal for dinner service.",
+                createdAt: "2025-09-11 14:30"
+            },
+            {
+                id: 2,
+                title: "Fresh Vegetables for Community Kitchen",
+                ngo: "Seva Society",
+                location: "Community Center, East Side",
+                quantity: "30 kg Mixed Vegetables",
+                foodType: "raw",
+                dietType: "veg",
+                urgency: "medium",
+                timeNeeded: "Tomorrow 10:00 AM",
+                expiry: "2025-09-13 12:00",
+                status: "pending",
+                beneficiaries: 150,
+                contact: "+91 98765 43211",
+                tags: ["vegetables", "fresh", "community"],
+                description: "Need fresh vegetables for community kitchen to prepare meals for underprivileged families.",
+                createdAt: "2025-09-11 12:00"
+            },
+            {
+                id: 3,
+                title: "Cooked Meals for Old Age Home",
+                ngo: "Elder Care Trust",
+                location: "Sunset Senior Home",
+                quantity: "50 Meal Portions",
+                foodType: "cooked",
+                dietType: "non-veg",
+                urgency: "low",
+                timeNeeded: "Tomorrow 7:00 PM",
+                expiry: "2025-09-13 20:00",
+                status: "completed",
+                beneficiaries: 50,
+                contact: "+91 98765 43212",
+                tags: ["meals", "elderly", "chicken", "dinner"],
+                description: "Special dinner arrangement for elderly residents including chicken curry and rice.",
+                createdAt: "2025-09-10 16:00"
+            },
+            {
+                id: 4,
+                title: "Breakfast Items for Children",
+                ngo: "Kids First Foundation",
+                location: "Government School, Block A",
+                quantity: "200 Breakfast Packets",
+                foodType: "cooked",
+                dietType: "veg",
+                urgency: "high",
+                timeNeeded: "Tomorrow 8:00 AM",
+                expiry: "2025-09-13 09:00",
+                status: "pending",
+                beneficiaries: 200,
+                contact: "+91 98765 43213",
+                tags: ["breakfast", "children", "school", "morning"],
+                description: "Morning breakfast program for underprivileged school children. Need nutritious vegetarian meals.",
+                createdAt: "2025-09-11 18:00"
+            },
+            {
+                id: 5,
+                title: "Packed Food for Flood Relief",
+                ngo: "Disaster Relief Network",
+                location: "Relief Camp, North District",
+                quantity: "500 Food Packets",
+                foodType: "cooked",
+                dietType: "veg",
+                urgency: "high",
+                timeNeeded: "ASAP",
+                expiry: "2025-09-12 12:00",
+                status: "expired",
+                beneficiaries: 500,
+                contact: "+91 98765 43214",
+                tags: ["relief", "flood", "emergency", "packets"],
+                description: "Emergency food relief for flood-affected families. Need ready-to-eat food packets.",
+                createdAt: "2025-09-09 10:00"
+            },
+            {
+                id: 6,
+                title: "Fruits and Dry Foods",
+                ngo: "Nutrition for All",
+                location: "Health Clinic, Central Area",
+                quantity: "20 kg Fruits, 10 kg Dry Foods",
+                foodType: "raw",
+                dietType: "veg",
+                urgency: "medium",
+                timeNeeded: "This Weekend",
+                expiry: "2025-09-14 18:00",
+                status: "pending",
+                beneficiaries: 75,
+                contact: "+91 98765 43215",
+                tags: ["fruits", "dry foods", "nutrition", "health"],
+                description: "Nutritional support program for malnourished children and pregnant women.",
+                createdAt: "2025-09-11 09:30"
+            }
+        ];
+
+        let requests = [...sampleRequests];
+        let filteredRequests = [...requests];
+        let userContributions = 3;
+
+        // DOM Elements
+        const cardsContainer = document.getElementById('cardsContainer');
+        const totalRequestsEl = document.getElementById('totalRequests');
+        const pendingRequestsEl = document.getElementById('pendingRequests');
+        const completedRequestsEl = document.getElementById('completedRequests');
+        const yourContributionsEl = document.getElementById('yourContributions');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatistics();
+            renderCards();
+            setupMobileMenu();
+        });
+
+        // Mobile menu functionality
+        function setupMobileMenu() {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenuBtn.classList.toggle('active');
+                navMenu.classList.toggle('mobile-active');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!mobileMenuBtn.contains(e.target) && !navMenu.contains(e.target)) {
+                    mobileMenuBtn.classList.remove('active');
+                    navMenu.classList.remove('mobile-active');
+                }
+            });
+        }
+
+        // Navigation functions
+        function navigateTo(page) {
+            showNotification(`Navigating to ${page.charAt(0).toUpperCase() + page.slice(1)} page...`, 'info');
+        }
+
+        function navigateToHome() {
+            showNotification('Navigating to Home page...', 'info');
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const totalRequests = filteredRequests.length;
+            const pendingRequests = filteredRequests.filter(r => r.status === 'pending').length;
+            const completedRequests = filteredRequests.filter(r => r.status === 'completed').length;
+
+            totalRequestsEl.textContent = totalRequests;
+            pendingRequestsEl.textContent = pendingRequests;
+            completedRequestsEl.textContent = completedRequests;
+            yourContributionsEl.textContent = userContributions;
+        }
+
+        // Render request cards
+        function renderCards() {
+            if (filteredRequests.length === 0) {
+                cardsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>No Requests Found</h3>
+                        <p>No food requests match your current filters. Try adjusting your search criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            cardsContainer.innerHTML = filteredRequests.map(request => `
+                <div class="request-card fade-in-up">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">${request.title}</h3>
+                            <p style="color: #6c757d; font-size: 0.9rem;">${request.ngo}</p>
+                        </div>
+                        <span class="status-badge status-${request.status}">${request.status}</span>
+                    </div>
+
+                    <div class="card-details">
+                        <div class="detail-row">
+                            <span class="detail-label">📍 Location</span>
+                            <span class="detail-value">${request.location}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📦 Quantity</span>
+                            <span class="detail-value">${request.quantity}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">👥 Beneficiaries</span>
+                            <span class="detail-value">${request.beneficiaries} people</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">⏰ Needed by</span>
+                            <span class="detail-value">${request.timeNeeded}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📞 Contact</span>
+                            <span class="detail-value">${request.contact}</span>
+                        </div>
+                    </div>
+
+                    <div class="urgency-indicator urgency-${request.urgency}">
+                        <span>🚨</span>
+                        <span><strong>${request.urgency.toUpperCase()} PRIORITY</strong></span>
+                    </div>
+
+                    <div style="margin: 1rem 0;">
+                        <span class="food-type-badge type-${request.foodType}">${request.foodType === 'cooked' ? 'Cooked Food' : 'Raw Ingredients'}</span>
+                        <span class="food-type-badge type-${request.dietType}">${request.dietType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}</span>
+                    </div>
+
+                    <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1.5rem;">${request.description}</p>
+
+                    <div class="card-actions">
+                        ${request.status === 'pending' ? 
+                            `<button class="btn-accept" onclick="acceptRequest(${request.id})" ${request.status !== 'pending' ? 'disabled' : ''}>
+                                ${request.status === 'pending' ? '✅ Accept Request' : request.status === 'completed' ? '✅ Completed' : '❌ Expired'}
+                            </button>` : 
+                            `<button class="btn-accept" disabled>
+                                ${request.status === 'completed' ? '✅ Completed' : '❌ Expired'}
+                            </button>`
+                        }
+                        <button class="btn-details" onclick="viewDetails(${request.id})">
+                            👁️ Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter functions
+        function applyFilters() {
+            const foodType = document.getElementById('foodTypeFilter').value;
+            const vegType = document.getElementById('vegFilter').value;
+            const searchTags = document.getElementById('tagsFilter').value.toLowerCase();
+            const urgencyLevel = document.getElementById('urgencyFilter').value;
+
+            filteredRequests = requests.filter(request => {
+                const matchesFoodType = !foodType || request.foodType === foodType;
+                const matchesVegType = !vegType || request.dietType === vegType;
+                const matchesUrgency = !urgencyLevel || request.urgency === urgencyLevel;
+                const matchesTags = !searchTags || 
+                    request.tags.some(tag => tag.toLowerCase().includes(searchTags)) ||
+                    request.title.toLowerCase().includes(searchTags) ||
+                    request.description.toLowerCase().includes(searchTags);
+
+                return matchesFoodType && matchesVegType && matchesUrgency && matchesTags;
+            });
+
+            updateStatistics();
+            renderCards();
+            showNotification(`Found ${filteredRequests.length} matching requests`, 'success');
+        }
+
+        function clearFilters() {
+            document.getElementById('foodTypeFilter').value = '';
+            document.getElementById('vegFilter').value = '';
+            document.getElementById('tagsFilter').value = '';
+            document.getElementById('urgencyFilter').value = '';
+
+            filteredRequests = [...requests];
+            updateStatistics();
+            renderCards();
+            showNotification('Filters cleared', 'info');
+        }
+
+        // Accept request function
+        function acceptRequest(requestId) {
+            const request = requests.find(r => r.id === requestId);
+            if (request && request.status === 'pending') {
+                request.status = 'completed';
+                userContributions++;
+                
+                // Update the filteredRequests array as well
+                const filteredRequest = filteredRequests.find(r => r.id === requestId);
+                if (filteredRequest) {
+                    filteredRequest.status = 'completed';
+                }
+
+                updateStatistics();
+                renderCards();
+                showNotification(`Request "${request.title}" accepted successfully! Thank you for your contribution.`, 'success');
+            }
+        }
+
+        // View request details
+        function viewDetails(requestId) {
+            const request = requests.find(r => r.id === requestId);
+            if (request) {
+                showNotification('Opening detailed view...', 'info');
+                // In a real app, this would navigate to a detailed view page
+                setTimeout(() => {
+                    showNotification(`Details for: ${request.title} - In a real app, this would open a detailed page`, 'info');
+                }, 500);
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Add search functionality on enter key
+        document.getElementById('tagsFilter').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+
+        // Add auto-filter functionality for better UX
+        document.getElementById('foodTypeFilter').addEventListener('change', applyFilters);
+        document.getElementById('vegFilter').addEventListener('change', applyFilters);
+        document.getElementById('urgencyFilter').addEventListener('change', applyFilters);
+    </script>
+</body>
+</html>
