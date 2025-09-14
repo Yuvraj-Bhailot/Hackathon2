@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Out - Foodlink</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signout-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signout-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logout-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .signout-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .signout-subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .signout-content {
+            padding: 40px 30px;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .user-info h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .signout-message {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .signout-message h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .signout-message p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .session-options {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .session-options h4 {
+            color: #e53e3e;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(229, 62, 62, 0.1);
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .option-info {
+            flex: 1;
+        }
+
+        .option-info h5 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .option-info p {
+            color: #666;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #e53e3e;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #155724;
+            text-align: center;
+            display: none;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 15px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .signout-container {
+                margin: 10px;
+                max-width: none;
+            }
+            
+            .signout-content {
+                padding: 30px 20px;
+            }
+            
+            .signout-header {
+                padding: 30px 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                padding: 16px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .signout-header h1 {
+                font-size: 24px;
+            }
+
+            .signout-content {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signout-container">
+        <div class="signout-header">
+            <div class="logout-icon">🚪</div>
+            <h1>Sign Out</h1>
+            <p class="signout-subtitle">Securely end your session</p>
+        </div>
+
+        <div class="signout-content">
+            <div class="success-message" id="successMessage">
+                You have been successfully signed out of your account.
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <h2 id="userName">John Doe</h2>
+                <p id="userEmail">john.doe@example.com</p>
+            </div>
+
+            <div class="signout-message">
+                <h3>Ready to sign out?</h3>
+                <p>You will be securely logged out of your Foodlink account. Make sure you've saved any important work before proceeding.</p>
+            </div>
+
+            <div class="session-options">
+                <h4>⚙️ Session Options</h4>
+                <div class="option-item">
+                    <div class="option-info">
+                        <h5>Sign out from all devices</h5>
+                        <p>End sessions on all your devices for maximum security</p>
+                    </div>
+                    <div class="toggle-switch" id="signoutAllDevices" onclick="toggleSwitch(this)"></div>
+                </div>
+                <div class="option-item">
+                    <div class="option-info">
+                        <h5>Clear browsing data</h5>
+                        <p>Remove saved passwords and form data from this browser</p>
+                    </div>
+                    <div class="toggle-switch" id="clearBrowsingData" onclick="toggleSwitch(this)"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-danger" onclick="signOut()">
+                    <span>🚪</span> Sign Out
+                </button>
+                <a href="index.html" class="btn btn-secondary">
+                    <span>↩️</span> Cancel
+                </a>
+            </div>
+
+            <div class="footer-links">
+                <a href="help.html">Need Help?</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="contact.html">Contact Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Signing you out...</h3>
+            <p>Please wait while we securely end your session.</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle switch functionality
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+        }
+
+        // Sign out functionality
+        function signOut() {
+            const signoutAllDevices = document.getElementById('signoutAllDevices').classList.contains('active');
+            const clearBrowsingData = document.getElementById('clearBrowsingData').classList.contains('active');
+            
+            // Show loading overlay
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Simulate sign out process
+            setTimeout(() => {
+                // Hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Clear browsing data if requested
+                if (clearBrowsingData) {
+                    // In a real app, this would clear saved data
+                    console.log('Clearing browsing data...');
+                }
+                
+                // Sign out from all devices if requested
+                if (signoutAllDevices) {
+                    console.log('Signing out from all devices...');
+                }
+                
+                // Update UI to show signed out state
+                updateSignedOutState();
+                
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                
+            }, 2500);
+        }
+
+        // Update UI to show signed out state
+        function updateSignedOutState() {
+            // Update header
+            document.querySelector('.signout-header h1').textContent = 'Signed Out Successfully';
+            document.querySelector('.signout-subtitle').textContent = 'Your session has been ended securely';
+            
+            // Update logout icon
+            document.querySelector('.logout-icon').textContent = '✓';
+            document.querySelector('.logout-icon').style.background = 'rgba(40, 167, 69, 0.3)';
+            
+            // Hide session options
+            document.querySelector('.session-options').style.display = 'none';
+            
+            // Update message
+            document.querySelector('.signout-message h3').textContent = 'Thank you for using Foodlink!';
+            document.querySelector('.signout-message p').textContent = 'You have been securely signed out. Redirecting you to the login page...';
+            
+            // Update action buttons
+            const actionButtons = document.querySelector('.action-buttons');
+            actionButtons.innerHTML = `
+                <a href="login.html" class="btn btn-danger">
+                    <span>🔐</span> Sign In Again
+                </a>
+                <a href="index.html" class="btn btn-secondary">
+                    <span>🏠</span> Go Home
+                </a>
+            `;
+        }
+
+        // Get user info from localStorage or set default
+        function initializeUserInfo() {
+            const userName = localStorage.getItem('userName') || 'John Doe';
+            const userEmail = localStorage.getItem('userEmail') || 'john.doe@example.com';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userEmail').textContent = userEmail;
+            
+            // Generate initials for avatar
+            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
+        }
+
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.location.href = 'index.html';
+            }
+            if (e.key === 'Enter' && e.ctrlKey) {
+                signOut();
+            }
+        });
+
+        // Prevent accidental navigation
+        window.addEventListener('beforeunload', function(e) {
+            if (document.getElementById('loadingOverlay').style.display === 'flex') {
+                e.preventDefault();
+                e.returnValue = 'Sign out process is in progress. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserInfo();
+            
+            // Add some random delay to simulate loading user data
+            setTimeout(() => {
+                document.querySelector('.signout-container').style.opacity = '1';
+            }, 100);
+        });
+
+        // Add hover effect to user avatar
+        document.getElementById('userAvatar').addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+        });
+
+        document.getElementById('userAvatar').addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Orders | FoodCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;color:#2c3e50;
+    }
+    .header{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.2);
+      position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .header-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;}
+    .logo{font-size:1.8rem;font-weight:700;color:#e74c3c;text-decoration:none;}
+    .nav-menu{display:flex;list-style:none;gap:2rem;align-items:center;}
+    .nav-menu a{text-decoration:none;color:#2c3e50;font-weight:500;transition:.3s;}
+    .nav-menu a:hover{color:#e74c3c;}
+    .main-content{max-width:1200px;margin:0 auto;padding:2rem;}
+    .page-title{color:white;font-size:2.5rem;font-weight:700;text-shadow:2px 2px 4px rgba(0,0,0,.3);margin-bottom:1rem;}
+    .page-subtitle{color:rgba(255,255,255,0.9);font-size:1.1rem;margin-bottom:2rem;}
+
+    /* Stats Section */
+    .stats-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;}
+    .stat-card{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;text-align:center;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .stat-number{font-size:2rem;font-weight:700;color:#e74c3c;}
+    .stat-label{color:#7f8c8d;font-weight:500;}
+
+    /* Filter Section */
+    .filter-section{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .filter-buttons{display:flex;gap:0.5rem;flex-wrap:wrap;}
+    .filter-btn{padding:0.5rem 1rem;border:2px solid #e74c3c;background:transparent;color:#e74c3c;border-radius:25px;
+      cursor:pointer;transition:all 0.3s;font-weight:500;}
+    .filter-btn:hover,.filter-btn.active{background:#e74c3c;color:white;}
+
+    /* Order Cards */
+    .orders-section{display:grid;gap:1.5rem;}
+    .order-card{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);transition:transform 0.3s;}
+    .order-card:hover{transform:translateY(-2px);}
+    
+    .order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+    .order-title{font-size:1.3rem;font-weight:700;color:#2c3e50;}
+    .order-id{font-size:0.9rem;color:#6c757d;font-weight:500;}
+    
+    /* Status Badges */
+    .status-badge{padding:0.4rem 1rem;border-radius:25px;font-size:0.85rem;font-weight:600;text-transform:uppercase;
+      display:inline-flex;align-items:center;gap:0.5rem;}
+    .status-waiting{background:linear-gradient(135deg,#ffd93d 0%,#ff6b35 100%);color:white;}
+    .status-confirmed{background:linear-gradient(135deg,#74b9ff 0%,#0984e3 100%);color:white;}
+    .status-preparing{background:linear-gradient(135deg,#fdcb6e 0%,#e17055 100%);color:white;}
+    .status-ready{background:linear-gradient(135deg,#00b894 0%,#00a085 100%);color:white;}
+    .status-delivered{background:linear-gradient(135deg,#55a3ff 0%,#003d82 100%);color:white;}
+    .status-cancelled{background:linear-gradient(135deg,#ff7675 0%,#d63031 100%);color:white;}
+
+    /* Progress Bar */
+    .progress-container{margin:1rem 0;}
+    .progress-steps{display:flex;align-items:center;position:relative;}
+    .progress-step{flex:1;text-align:center;position:relative;z-index:2;}
+    .step-circle{width:30px;height:30px;border-radius:50%;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;
+      font-weight:bold;font-size:0.8rem;transition:all 0.3s;}
+    .step-label{font-size:0.75rem;color:#6c757d;font-weight:500;}
+    
+    .step-completed .step-circle{background:#28a745;color:white;}
+    .step-active .step-circle{background:#007bff;color:white;animation:pulse 2s infinite;}
+    .step-pending .step-circle{background:#e9ecef;color:#6c757d;border:2px solid #dee2e6;}
+    
+    .progress-line{position:absolute;top:15px;left:15px;right:15px;height:2px;background:#e9ecef;z-index:1;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#28a745 0%,#007bff 100%);transition:width 0.8s ease;}
+
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+
+    /* Order Details */
+    .order-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0;}
+    .detail-item{text-align:center;padding:0.5rem;}
+    .detail-label{font-size:0.8rem;color:#6c757d;text-transform:uppercase;font-weight:600;letter-spacing:0.5px;}
+    .detail-value{font-size:1rem;font-weight:600;color:#2c3e50;margin-top:0.25rem;}
+
+    /* Estimated Time */
+    .eta-section{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:1rem;border-radius:15px;
+      margin-top:1rem;text-align:center;}
+    .eta-label{font-size:0.9rem;opacity:0.9;}
+    .eta-time{font-size:1.2rem;font-weight:700;margin-top:0.25rem;}
+
+    /* Timeline for detailed tracking */
+    .timeline{margin-top:1rem;}
+    .timeline-item{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;opacity:0.6;}
+    .timeline-item.active{opacity:1;}
+    .timeline-dot{width:12px;height:12px;border-radius:50%;background:#28a745;margin-top:0.25rem;flex-shrink:0;}
+    .timeline-dot.pending{background:#dee2e6;}
+    .timeline-content{flex:1;}
+    .timeline-title{font-weight:600;color:#2c3e50;font-size:0.9rem;}
+    .timeline-time{font-size:0.8rem;color:#6c757d;}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a class="logo" href="index.html">🍽️ FoodCare</a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="ngo.html">NGO</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-content">
+    <h1 class="page-title">Track Your Food Orders</h1>
+    <p class="page-subtitle">Monitor the progress of your donations from confirmation to delivery</p>
+
+    <!-- Stats -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <span class="stat-number">12</span>
+        <span class="stat-label">Total Orders</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Delivered</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">4</span>
+        <span class="stat-label">In Progress</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Awaiting Confirmation</span>
+      </div>
+    </section>
+
+    <!-- Filter -->
+    <section class="filter-section">
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterOrders('all')">All Orders</button>
+        <button class="filter-btn" onclick="filterOrders('waiting')">Waiting Confirmation</button>
+        <button class="filter-btn" onclick="filterOrders('confirmed')">Confirmed</button>
+        <button class="filter-btn" onclick="filterOrders('preparing')">Preparing</button>
+        <button class="filter-btn" onclick="filterOrders('ready')">Ready</button>
+        <button class="filter-btn" onclick="filterOrders('delivered')">Delivered</button>
+      </div>
+    </section>
+
+    <!-- Order Cards -->
+    <section class="orders-section">
+      
+      <!-- Order 1: Delivered -->
+      <div class="order-card" data-status="delivered">
+        <div class="order-header">
+          <div>
+            <h3 class="order-title">Cooked Meals for 50 People</h3>
+            <p class="order-id">Order #FC2025001</p>
+          </div>
+          <span class="status-badge status-delivered">✓ Delivered</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill" style="width:100%"></div></div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Confirmed</div>
+            </div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Preparing</div>
+            </div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Ready</div>
+            </div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Delivered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="detail-item">
+            <div class="detail-label">NGO Partner</div>
+            <div class="detail-value">Hope Foundation</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Order Date</div>
+            <div class="detail-value">Sept 10, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Delivered</div>
+            <div class="detail-value">Sept 12, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Impact</div>
+            <div class="detail-value">50 People Fed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order 2: Ready for Pickup -->
+      <div class="order-card" data-status="ready">
+        <div class="order-header">
+          <div>
+            <h3 class="order-title">Rice & Dal Packets (100kg)</h3>
+            <p class="order-id">Order #FC2025002</p>
+          </div>
+          <span class="status-badge status-ready">📦 Ready for Pickup</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill" style="width:75%"></div></div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Confirmed</div>
+            </div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Preparing</div>
+            </div>
+            <div class="progress-step step-active">
+              <div class="step-circle">3</div>
+              <div class="step-label">Ready</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">4</div>
+              <div class="step-label">Delivered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="detail-item">
+            <div class="detail-label">NGO Partner</div>
+            <div class="detail-value">Food for All</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Order Date</div>
+            <div class="detail-value">Sept 11, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Expected Impact</div>
+            <div class="detail-value">200+ Meals</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">Nashik Central</div>
+          </div>
+        </div>
+
+        <div class="eta-section">
+          <div class="eta-label">Ready for pickup by NGO team</div>
+          <div class="eta-time">Available Now</div>
+        </div>
+      </div>
+
+      <!-- Order 3: Preparing -->
+      <div class="order-card" data-status="preparing">
+        <div class="order-header">
+          <div>
+            <h3 class="order-title">Fresh Vegetable Baskets</h3>
+            <p class="order-id">Order #FC2025003</p>
+          </div>
+          <span class="status-badge status-preparing">👨‍🍳 Preparing</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill" style="width:50%"></div></div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Confirmed</div>
+            </div>
+            <div class="progress-step step-active">
+              <div class="step-circle">2</div>
+              <div class="step-label">Preparing</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">3</div>
+              <div class="step-label">Ready</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">4</div>
+              <div class="step-label">Delivered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="detail-item">
+            <div class="detail-label">NGO Partner</div>
+            <div class="detail-value">Seva Society</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Order Date</div>
+            <div class="detail-value">Sept 13, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Expected Impact</div>
+            <div class="detail-value">150 Families</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Type</div>
+            <div class="detail-value">Fresh Produce</div>
+          </div>
+        </div>
+
+        <div class="eta-section">
+          <div class="eta-label">Estimated Ready Time</div>
+          <div class="eta-time">2-3 hours</div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">Order Confirmed</div>
+              <div class="timeline-time">Today, 10:30 AM</div>
+            </div>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">Sourcing fresh vegetables</div>
+              <div class="timeline-time">Today, 11:15 AM</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot pending"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">Packaging in progress</div>
+              <div class="timeline-time">In progress...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order 4: Waiting Confirmation -->
+      <div class="order-card" data-status="waiting">
+        <div class="order-header">
+          <div>
+            <h3 class="order-title">Cooked Biryani (300 portions)</h3>
+            <p class="order-id">Order #FC2025004</p>
+          </div>
+          <span class="status-badge status-waiting">⏱️ Awaiting Confirmation</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill" style="width:0%"></div></div>
+            <div class="progress-step step-active">
+              <div class="step-circle">1</div>
+              <div class="step-label">Confirmation</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">2</div>
+              <div class="step-label">Preparing</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">3</div>
+              <div class="step-label">Ready</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">4</div>
+              <div class="step-label">Delivered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="detail-item">
+            <div class="detail-label">NGO Partner</div>
+            <div class="detail-value">Street Aid Network</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Order Date</div>
+            <div class="detail-value">Sept 14, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Expected Impact</div>
+            <div class="detail-value">300 People</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Under Review</div>
+          </div>
+        </div>
+
+        <div class="eta-section">
+          <div class="eta-label">Awaiting NGO confirmation</div>
+          <div class="eta-time">Expected within 2-4 hours</div>
+        </div>
+      </div>
+
+      <!-- Order 5: Confirmed -->
+      <div class="order-card" data-status="confirmed">
+        <div class="order-header">
+          <div>
+            <h3 class="order-title">Milk & Bread Distribution</h3>
+            <p class="order-id">Order #FC2025005</p>
+          </div>
+          <span class="status-badge status-confirmed">✅ Confirmed</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill" style="width:25%"></div></div>
+            <div class="progress-step step-completed">
+              <div class="step-circle">✓</div>
+              <div class="step-label">Confirmed</div>
+            </div>
+            <div class="progress-step step-active">
+              <div class="step-circle">2</div>
+              <div class="step-label">Preparing</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">3</div>
+              <div class="step-label">Ready</div>
+            </div>
+            <div class="progress-step step-pending">
+              <div class="step-circle">4</div>
+              <div class="step-label">Delivered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="detail-item">
+            <div class="detail-label">NGO Partner</div>
+            <div class="detail-value">Relief Network</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Order Date</div>
+            <div class="detail-value">Sept 14, 2025</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Expected Impact</div>
+            <div class="detail-value">100 Families</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Scheduled</div>
+            <div class="detail-value">Tomorrow 8 AM</div>
+          </div>
+        </div>
+
+        <div class="eta-section">
+          <div class="eta-label">Preparation starts tomorrow morning</div>
+          <div class="eta-time">Ready by 10 AM</div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    function filterOrders(status) {
+      // Update active filter button
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Show/hide orders based on filter
+      document.querySelectorAll('.order-card').forEach(card => {
+        if (status === 'all') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = card.dataset.status === status ? 'block' : 'none';
+        }
+      });
+    }
+
+    // Add some real-time updates simulation
+    setInterval(() => {
+      const preparingCards = document.querySelectorAll('[data-status="preparing"]');
+      preparingCards.forEach(card => {
+        const activeSteps = card.querySelectorAll('.step-active .step-circle');
+        activeSteps.forEach(circle => {
+          circle.style.transform = circle.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+        });
+      });
+    }, 2000);
+  </script>
+</body>
+</html>

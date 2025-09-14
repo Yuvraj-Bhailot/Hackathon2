@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join FoodCare | Sign Up</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #764ba2;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #667eea;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #667eea;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Signup Section */
+    .signup-section {
+      padding: 3rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 140px);
+    }
+
+    .signup-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 500px;
+      width: 100%;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Toggle Buttons */
+    .toggle-buttons {
+      display: flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .toggle {
+      flex: 1;
+      padding: 1rem 2rem;
+      border: none;
+      background: transparent;
+      color: white;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .toggle.active {
+      background: white;
+      color: #667eea;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .toggle:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Form Styles */
+    .form {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .form.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #333;
+      font-size: 1.8rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    .input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e1e1e1;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .input.error {
+      border-color: #e74c3c;
+      background: #ffeaea;
+    }
+
+    .input.success {
+      border-color: #27ae60;
+      background: #eafaf1;
+    }
+
+    .phone-input-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .phone-prefix {
+      flex: 0 0 auto;
+      padding: 0.875rem 0.75rem;
+      background: #f0f0f0;
+      border: 2px solid #e1e1e1;
+      border-radius: 10px;
+      font-weight: 500;
+      color: #666;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .phone-input {
+      flex: 1;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .password-strength {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .strength-bar {
+      height: 4px;
+      background: #e1e1e1;
+      border-radius: 2px;
+      margin: 0.25rem 0;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .strength-weak { background: #e74c3c; width: 25%; }
+    .strength-fair { background: #f39c12; width: 50%; }
+    .strength-good { background: #f1c40f; width: 75%; }
+    .strength-strong { background: #27ae60; width: 100%; }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      cursor: pointer;
+      color: #666;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    .password-toggle:hover {
+      color: #667eea;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 2rem 0 1rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    .loading-spinner.show {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .switch-text {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .switch-text a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .switch-text a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .checkbox {
+      margin-top: 0.25rem;
+    }
+
+    .checkbox-label {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .checkbox-label a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .checkbox-label a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: auto;
+    }
+
+    /* Success Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.7);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.show .modal {
+      transform: scale(1);
+    }
+
+    .modal h3 {
+      color: #27ae60;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .modal p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .signup-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .toggle {
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">🍽️ FoodCare</a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="ngo.html">NGO</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="signin.html">Sign In</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="my-donation.html">My Donation</a></li>
+            <li><a href="user-dashboard.html">User Dashboard</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Signup Section -->
+  <section class="signup-section">
+    <!-- Toggle Buttons -->
+    <div class="toggle-buttons">
+      <button id="ngoBtn" class="toggle active">🏢 Join as NGO</button>
+      <button id="donorBtn" class="toggle">❤️ Join as Donor</button>
+    </div>
+
+    <div class="signup-container">
+      <!-- Alert Container -->
+      <div id="alertContainer"></div>
+
+      <!-- NGO Form -->
+      <form id="ngoForm" class="form active">
+        <h2>NGO Registration</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">Join our network of food rescue organizations</p>
+
+        <div class="form-group">
+          <label class="label" for="ngoName">Organization Name</label>
+          <input class="input" id="ngoName" name="name" type="text" placeholder="Enter NGO name" required />
+          <div class="error-message" id="ngoNameError"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="label" for="ngoEmail">Official Email</label>
+            <input class="input" id="ngoEmail" name="email" type="email" placeholder="contact@ngo.org" required />
+            <div class="error-message" id="ngoEmailError"></div>
+          </div>
+          <div class="form-group">
+            <label class="label" for="ngoPhone">Phone Number</label>
+            <div class="phone-input-group">
+              <span class="phone-prefix">+91</span>
+              <input class="input phone-input" id="ngoPhone" name="phone" type="tel" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required />
+            </div>
+            <div class="error-message" id="ngoPhoneError"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="ngoPassword">Password</label>
+          <input class="input" id="ngoPassword" name="password" type="password" placeholder="Create secure password" required />
+          <span class="password-toggle" onclick="togglePassword('ngoPassword')">👁️</span>
+          <div class="password-strength" id="ngoPasswordStrength">
+            <div class="strength-bar">
+              <div class="strength-fill" id="ngoStrengthFill"></div>
+            </div>
+            <span id="ngoStrengthText">Password strength</span>
+          </div>
+          <div class="error-message" id="ngoPasswordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="ngoConfirmPassword">Confirm Password</label>
+          <input class="input" id="ngoConfirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password" required />
+          <span class="password-toggle" onclick="togglePassword('ngoConfirmPassword')">👁️</span>
+          <div class="error-message" id="ngoConfirmPasswordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="ngoAddress">Organization Address</label>
+          <input class="input" id="ngoAddress" name="address" type="text" placeholder="123 Main St, City, State" required />
+          <div class="error-message" id="ngoAddressError"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="label" for="ngoOpenTime">Opening Time</label>
+            <input class="input" id="ngoOpenTime" name="openTime" type="time" required />
+            <div class="error-message" id="ngoOpenTimeError"></div>
+          </div>
+          <div class="form-group">
+            <label class="label" for="ngoCloseTime">Closing Time</label>
+            <input class="input" id="ngoCloseTime" name="closeTime" type="time" required />
+            <div class="error-message" id="ngoCloseTimeError"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="ngoCapacity">Max Daily Pickup Capacity (meals)</label>
+          <input class="input" id="ngoCapacity" name="capacity" type="number" min="1" max="10000" placeholder="e.g. 500" required />
+          <div class="error-message" id="ngoCapacityError"></div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="ngoTerms" class="checkbox" required />
+          <label for="ngoTerms" class="checkbox-label">
+            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+          </label>
+        </div>
+
+        <button class="btn" type="submit" id="ngoSubmitBtn">
+          <span class="loading-spinner" id="ngoSpinner"></span>
+          <span id="ngoSubmitText">Create NGO Account</span>
+        </button>
+
+        <p class="switch-text">Already have an account? <a href="#">Sign In</a></p>
+      </form>
+
+      <!-- Donor Form -->
+      <form id="donorForm" class="form">
+        <h2>Donor Registration</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">Help reduce food waste by donating surplus food</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="label" for="donorFirstName">First Name</label>
+            <input class="input" id="donorFirstName" name="firstName" type="text" placeholder="John" required />
+            <div class="error-message" id="donorFirstNameError"></div>
+          </div>
+          <div class="form-group">
+            <label class="label" for="donorLastName">Last Name</label>
+            <input class="input" id="donorLastName" name="lastName" type="text" placeholder="Doe" required />
+            <div class="error-message" id="donorLastNameError"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="donorEmail">Email Address</label>
+          <input class="input" id="donorEmail" name="email" type="email" placeholder="john@example.com" required />
+          <div class="error-message" id="donorEmailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="donorPhone">Phone Number</label>
+          <div class="phone-input-group">
+            <span class="phone-prefix">+91</span>
+            <input class="input phone-input" id="donorPhone" name="phone" type="tel" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required />
+          </div>
+          <div class="error-message" id="donorPhoneError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="donorPassword">Password</label>
+          <input class="input" id="donorPassword" name="password" type="password" placeholder="Create secure password" required />
+          <span class="password-toggle" onclick="togglePassword('donorPassword')">👁️</span>
+          <div class="password-strength" id="donorPasswordStrength">
+            <div class="strength-bar">
+              <div class="strength-fill" id="donorStrengthFill"></div>
+            </div>
+            <span id="donorStrengthText">Password strength</span>
+          </div>
+          <div class="error-message" id="donorPasswordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="donorConfirmPassword">Confirm Password</label>
+          <input class="input" id="donorConfirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password" required />
+          <span class="password-toggle" onclick="togglePassword('donorConfirmPassword')">👁️</span>
+          <div class="error-message" id="donorConfirmPasswordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="donorType">Donor Type</label>
+          <select class="input" id="donorType" name="donorType" required>
+            <option value="">Select donor type</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="grocery">Grocery Store</option>
+            <option value="catering">Catering Service</option>
+            <option value="hotel">Hotel</option>
+            <option value="individual">Individual</option>
+            <option value="other">Other</option>
+          </select>
+          <div class="error-message" id="donorTypeError"></div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="donorTerms" class="checkbox" required />
+          <label for="donorTerms" class="checkbox-label">
+            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+          </label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="donorNewsletter" class="checkbox" />
+          <label for="donorNewsletter" class="checkbox-label">
+            Subscribe to our newsletter for updates and impact stories
+          </label>
+        </div>
+
+        <button class="btn" type="submit" id="donorSubmitBtn">
+          <span class="loading-spinner" id="donorSpinner"></span>
+          <span id="donorSubmitText">Create Donor Account</span>
+        </button>
+
+        <p class="switch-text">Already have an account? <a href="#">Sign In</a></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal">
+      <h3>🎉 Account Created Successfully!</h3>
+      <p id="successMessage">Welcome to FoodCare! Check your email for verification instructions.</p>
+      <button class="btn" onclick="location.reload()" style="margin: 0;">Continue</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 FoodCare. Making a difference, one meal at a time.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Password visibility toggle function
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const toggle = input.nextElementSibling;
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        toggle.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        toggle.textContent = '👁️';
+      }
+    }
+
+    class FoodCareSignup {
+      constructor() {
+        this.currentForm = 'ngo';
+        this.alertContainer = document.getElementById('alertContainer');
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.setupPasswordStrength();
+        this.setupPhoneInputs();
+        this.checkUrlForFormType();
+      }
+
+      bindEvents() {
+        // Toggle buttons
+        document.getElementById('ngoBtn').addEventListener('click', () => this.switchForm('ngo'));
+        document.getElementById('donorBtn').addEventListener('click', () => this.switchForm('donor'));
+
+        // Form submissions
+        document.getElementById('ngoForm').addEventListener('submit', (e) => this.handleSubmit(e, 'ngo'));
+        document.getElementById('donorForm').addEventListener('submit', (e) => this.handleSubmit(e, 'donor'));
+
+        // Real-time validation
+        this.setupValidation();
+      }
+
+      switchForm(formType) {
+        // Update button states
+        const ngoBtn = document.getElementById('ngoBtn');
+        const donorBtn = document.getElementById('donorBtn');
+        const ngoForm = document.getElementById('ngoForm');
+        const donorForm = document.getElementById('donorForm');
+
+        if (formType === 'ngo') {
+          ngoBtn.classList.add('active');
+          donorBtn.classList.remove('active');
+          ngoForm.classList.add('active');
+          donorForm.classList.remove('active');
+        } else {
+          donorBtn.classList.add('active');
+          ngoBtn.classList.remove('active');
+          donorForm.classList.add('active');
+          ngoForm.classList.remove('active');
+        }
+
+        this.currentForm = formType;
+        this.clearAlerts();
+        
+        // Update URL without reloading
+        try {
+          const newUrl = new URL(window.location);
+          newUrl.searchParams.set('type', formType);
+          window.history.replaceState({}, '', newUrl);
+        } catch (error) {
+          console.warn('Could not update URL:', error);
+        }
+      }
+
+      setupPhoneInputs() {
+        const phoneInputs = document.querySelectorAll('.phone-input');
+        phoneInputs.forEach(input => {
+          // Format input as user types
+          input.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (value.length > 10) {
+              value = value.substr(0, 10);
+            }
+            
+            e.target.value = value;
+            
+            // Real-time validation
+            this.validatePhoneNumber(input, value);
+          });
+
+          // Prevent non-numeric input
+          input.addEventListener('keypress', (e) => {
+            const charCode = e.which || e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+              e.preventDefault();
+            }
+          });
+
+          // Validate on blur
+          input.addEventListener('blur', () => {
+            this.validatePhoneNumber(input, input.value);
+          });
+        });
+      }
+
+      validatePhoneNumber(input, value) {
+        const errorElement = document.getElementById(input.id + 'Error');
+        
+        if (value.length === 0) {
+          this.showError(input, errorElement, 'Phone number is required');
+          return false;
+        }
+        
+        if (value.length !== 10) {
+          this.showError(input, errorElement, 'Phone number must be exactly 10 digits');
+          return false;
+        }
+        
+        if (!/^[6-9][0-9]{9}$/.test(value)) {
+          this.showError(input, errorElement, 'Please enter a valid Indian mobile number');
+          return false;
+        }
+
+        this.showSuccess(input, errorElement);
+        return true;
+      }
+
+      setupValidation() {
+        const inputs = document.querySelectorAll('.input');
+        inputs.forEach(input => {
+          // Skip phone inputs as they have special handling
+          if (input.classList.contains('phone-input')) return;
+          
+          input.addEventListener('blur', () => this.validateField(input));
+          input.addEventListener('input', () => {
+            if (input.type === 'password' && !input.id.includes('Confirm')) {
+              this.updatePasswordStrength(input);
+            }
+            if (input.classList.contains('error')) {
+              this.validateField(input);
+            }
+          });
+        });
+      }
+
+      setupPasswordStrength() {
+        const passwordInputs = ['ngoPassword', 'donorPassword'];
+        passwordInputs.forEach(id => {
+          const input = document.getElementById(id);
+          if (input) {
+            input.addEventListener('input', () => this.updatePasswordStrength(input));
+          }
+        });
+      }
+
+      updatePasswordStrength(input) {
+        const password = input.value;
+        const prefix = input.id.replace('Password', '');
+        const strengthFill = document.getElementById(prefix + 'StrengthFill');
+        const strengthText = document.getElementById(prefix + 'StrengthText');
+        
+        if (!strengthFill || !strengthText) return;
+
+        const score = this.calculatePasswordStrength(password);
+        
+        strengthFill.className = 'strength-fill';
+        
+        if (score < 2) {
+          strengthFill.classList.add('strength-weak');
+          strengthText.textContent = 'Weak password';
+          strengthText.style.color = '#e74c3c';
+        } else if (score < 3) {
+          strengthFill.classList.add('strength-fair');
+          strengthText.textContent = 'Fair password';
+          strengthText.style.color = '#f39c12';
+        } else if (score < 4) {
+          strengthFill.classList.add('strength-good');
+          strengthText.textContent = 'Good password';
+          strengthText.style.color = '#f1c40f';
+        } else {
+          strengthFill.classList.add('strength-strong');
+          strengthText.textContent = 'Strong password';
+          strengthText.style.color = '#27ae60';
+        }
+      }
+
+      calculatePasswordStrength(password) {
+        let score = 0;
+        
+        // Length
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        
+        // Character variety
+        if (/[a-z]/.test(password)) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/[0-9]/.test(password)) score++;
+        if (/[^A-Za-z0-9]/.test(password)) score++;
+        
+        return Math.min(score, 4);
+      }
+
+      validateField(input) {
+        const value = input.value.trim();
+        const name = input.name;
+        const errorElement = document.getElementById(input.id + 'Error');
+        
+        // Required field validation
+        if (!value && input.required) {
+          this.showError(input, errorElement, `${this.getFieldLabel(name)} is required`);
+          return false;
+        }
+
+        // Email validation
+        if (input.type === 'email' && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            this.showError(input, errorElement, 'Please enter a valid email address');
+            return false;
+          }
+        }
+
+        // Password validation
+        if (input.type === 'password' && !input.id.includes('Confirm') && value) {
+          if (value.length < 8) {
+            this.showError(input, errorElement, 'Password must be at least 8 characters long');
+            return false;
+          }
+        }
+
+        // Confirm password validation
+        if (input.id.includes('ConfirmPassword') && value) {
+          const prefix = input.id.replace('ConfirmPassword', '');
+          const originalPassword = document.getElementById(prefix + 'Password').value;
+          if (value !== originalPassword) {
+            this.showError(input, errorElement, 'Passwords do not match');
+            return false;
+          }
+        }
+
+        // Number validations
+        if (input.type === 'number' && value) {
+          const num = parseInt(value);
+          if (isNaN(num) || num < 1 || num > 10000) {
+            this.showError(input, errorElement, 'Please enter a valid capacity (1-10000)');
+            return false;
+          }
+        }
+
+        // Time validation
+        if (input.type === 'time' && value) {
+          const prefix = input.id.includes('Open') ? input.id.replace('OpenTime', '') : 
+                         input.id.replace('CloseTime', '');
+          const openTime = document.getElementById(prefix + 'OpenTime').value;
+          const closeTime = document.getElementById(prefix + 'CloseTime').value;
+          
+          if (openTime && closeTime && input.id.includes('Close')) {
+            if (closeTime <= openTime) {
+              this.showError(input, errorElement, 'Closing time must be after opening time');
+              return false;
+            }
+          }
+        }
+
+        // Select validation
+        if (input.tagName === 'SELECT' && !value && input.required) {
+          this.showError(input, errorElement, 'Please select an option');
+          return false;
+        }
+
+        this.showSuccess(input, errorElement);
+        return true;
+      }
+
+      getFieldLabel(name) {
+        const labels = {
+          name: 'Organization name',
+          firstName: 'First name',
+          lastName: 'Last name',
+          email: 'Email',
+          phone: 'Phone number',
+          password: 'Password',
+          confirmPassword: 'Confirm password',
+          address: 'Address',
+          openTime: 'Opening time',
+          closeTime: 'Closing time',
+          capacity: 'Capacity',
+          donorType: 'Donor type'
+        };
+        return labels[name] || name;
+      }
+
+      showError(input, errorElement, message) {
+        input.classList.add('error');
+        input.classList.remove('success');
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.classList.add('show');
+        }
+      }
+
+      showSuccess(input, errorElement) {
+        input.classList.remove('error');
+        input.classList.add('success');
+        if (errorElement) {
+          errorElement.classList.remove('show');
+        }
+      }
+
+      validateForm(formType) {
+        const form = document.getElementById(formType + 'Form');
+        const inputs = form.querySelectorAll('.input');
+        let isValid = true;
+
+        inputs.forEach(input => {
+          if (input.classList.contains('phone-input')) {
+            if (!this.validatePhoneNumber(input, input.value)) {
+              isValid = false;
+            }
+          } else if (!this.validateField(input)) {
+            isValid = false;
+          }
+        });
+
+        // Check terms checkbox
+        const termsCheckbox = document.getElementById(formType + 'Terms');
+        if (!termsCheckbox.checked) {
+          this.showAlert('Please accept the terms and conditions', 'error');
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      async handleSubmit(e, formType) {
+        e.preventDefault();
+        
+        if (!this.validateForm(formType)) {
+          return;
+        }
+
+        const submitBtn = document.getElementById(formType + 'SubmitBtn');
+        const spinner = document.getElementById(formType + 'Spinner');
+        const submitText = document.getElementById(formType + 'SubmitText');
+
+        // Show loading state
+        submitBtn.disabled = true;
+        spinner.classList.add('show');
+        submitText.textContent = 'Creating Account...';
+
+        try {
+          // Simulate API call
+          await this.simulateApiCall();
+          
+          // Show success
+          this.showSuccessModal(formType);
+          
+        } catch (error) {
+          this.showAlert('Something went wrong. Please try again.', 'error');
+        } finally {
+          // Reset button state
+          submitBtn.disabled = false;
+          spinner.classList.remove('show');
+          submitText.textContent = formType === 'ngo' ? 'Create NGO Account' : 'Create Donor Account';
+        }
+      }
+
+      simulateApiCall() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            // Simulate 90% success rate
+            if (Math.random() > 0.1) {
+              resolve();
+            } else {
+              reject(new Error('API Error'));
+            }
+          }, 2000);
+        });
+      }
+
+      showSuccessModal(formType) {
+        const modal = document.getElementById('successModal');
+        const message = document.getElementById('successMessage');
+        
+        const messages = {
+          ngo: 'Your NGO account has been created! We will review your application and send verification instructions to your email.',
+          donor: 'Welcome to FoodCare! Your donor account is ready. Check your email for verification instructions.'
+        };
+        
+        message.textContent = messages[formType];
+        modal.classList.add('show');
+      }
+
+      showAlert(message, type) {
+        this.clearAlerts();
+        
+        const alert = document.createElement('div');
+        alert.className = `alert ${type} show`;
+        alert.textContent = message;
+        
+        this.alertContainer.appendChild(alert);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+          alert.remove();
+        }, 5000);
+      }
+
+      clearAlerts() {
+        this.alertContainer.innerHTML = '';
+      }
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      new FoodCareSignup();
+    });
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('successModal');
+      if (e.target === modal) {
+        modal.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

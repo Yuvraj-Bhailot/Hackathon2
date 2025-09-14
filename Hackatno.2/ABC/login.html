@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In — FoodCare</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #764ba2;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #667eea;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #667eea;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Content */
+    .section {
+      padding: 4rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 140px);
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 450px;
+      width: 100%;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+      text-align: center;
+    }
+
+    .text-muted {
+      color: #666;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    .input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e1e1e1;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input.error {
+      border-color: #e74c3c;
+      background: #ffeaea;
+    }
+
+    .input.success {
+      border-color: #27ae60;
+      background: #eafaf1;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: #667eea;
+      border: 2px solid #667eea;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .btn.secondary:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    .loading-spinner.show {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .password-toggle:hover {
+      color: #667eea;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .forgot-password a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .login-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .section {
+        padding: 2rem 0;
+      }
+    }
+  </style>
+</head>
+<body data-page="Login">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">🍽️ FoodCare</a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="ngo.html">NGO</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="my-donation.html">My Donations</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="login-container">
+      <h1>Welcome Back</h1>
+      <p class="text-muted">Sign in to your FoodCare account to track and manage donations.</p>
+      
+      <!-- Alert Messages -->
+      <div id="alertContainer"></div>
+
+      <form id="LoginForm" novalidate>
+        <div class="form-group">
+          <label class="label" for="email">Email Address</label>
+          <input class="input" id="email" name="email" type="email" placeholder="you@example.com" required />
+          <div class="error-message" id="emailError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label class="label" for="password">Password</label>
+          <div style="position: relative;">
+            <input class="input" id="password" name="password" type="password" placeholder="Enter your password" required />
+            <button type="button" class="password-toggle" id="passwordToggle">👁️</button>
+          </div>
+          <div class="error-message" id="passwordError"></div>
+        </div>
+        
+        <button class="btn primary" type="submit" id="submitBtn">
+          <span class="loading-spinner" id="loadingSpinner"></span>
+          <span id="submitText">Sign In</span>
+        </button>
+        
+        <a class="btn secondary" href="#">Create New Account</a>
+        
+        <div class="forgot-password">
+          <a href="#" id="forgotPassword">Forgot your password?</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 FoodCare. Making a difference, one meal at a time.</p>
+    </div>
+  </footer>
+
+  <script>
+    class FoodCareAuth {
+      constructor() {
+        this.form = document.getElementById('LoginForm');
+        this.emailInput = document.getElementById('email');
+        this.passwordInput = document.getElementById('password');
+        this.submitBtn = document.getElementById('submitBtn');
+        this.loadingSpinner = document.getElementById('loadingSpinner');
+        this.submitText = document.getElementById('submitText');
+        this.passwordToggle = document.getElementById('passwordToggle');
+        this.alertContainer = document.getElementById('alertContainer');
+        
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.loadSavedEmail();
+      }
+
+      bindEvents() {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.emailInput.addEventListener('input', this.validateEmail.bind(this));
+        this.passwordInput.addEventListener('input', this.validatePassword.bind(this));
+        this.passwordToggle.addEventListener('click', this.togglePassword.bind(this));
+        
+        // Real-time validation on blur
+        this.emailInput.addEventListener('blur', this.validateEmail.bind(this));
+        this.passwordInput.addEventListener('blur', this.validatePassword.bind(this));
+        
+        // Forgot password handler
+        document.getElementById('forgotPassword').addEventListener('click', this.handleForgotPassword.bind(this));
+      }
+
+      loadSavedEmail() {
+        const savedEmail = localStorage.getItem('foodcare_saved_email');
+        if (savedEmail) {
+          this.emailInput.value = savedEmail;
+          this.validateEmail();
+        }
+      }
+
+      validateEmail() {
+        const email = this.emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const errorElement = document.getElementById('emailError');
+        
+        if (!email) {
+          this.showFieldError(this.emailInput, errorElement, 'Email is required');
+          return false;
+        }
+        
+        if (!emailRegex.test(email)) {
+          this.showFieldError(this.emailInput, errorElement, 'Please enter a valid email address');
+          return false;
+        }
+        
+        this.showFieldSuccess(this.emailInput, errorElement);
+        return true;
+      }
+
+      validatePassword() {
+        const password = this.passwordInput.value;
+        const errorElement = document.getElementById('passwordError');
+        
+        if (!password) {
+          this.showFieldError(this.passwordInput, errorElement, 'Password is required');
+          return false;
+        }
+        
+        if (password.length < 6) {
+          this.showFieldError(this.passwordInput, errorElement, 'Password must be at least 6 characters');
+          return false;
+        }
+        
+        this.showFieldSuccess(this.passwordInput, errorElement);
+        return true;
+      }
+
+      showFieldError(input, errorElement, message) {
+        input.classList.remove('success');
+        input.classList.add('error');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+      }
+
+      showFieldSuccess(input, errorElement) {
+        input.classList.remove('error');
+        input.classList.add('success');
+        errorElement.classList.remove('show');
+      }
+
+      showAlert(message, type = 'error') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert ${type} show`;
+        alertDiv.textContent = message;
+        
+        this.alertContainer.innerHTML = '';
+        this.alertContainer.appendChild(alertDiv);
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            alertDiv.classList.remove('show');
+          }, 3000);
+        }
+      }
+
+      togglePassword() {
+        const type = this.passwordInput.type === 'password' ? 'text' : 'password';
+        this.passwordInput.type = type;
+        this.passwordToggle.textContent = type === 'password' ? '👁️' : '🙈';
+      }
+
+      setLoading(loading) {
+        this.submitBtn.disabled = loading;
+        this.loadingSpinner.classList.toggle('show', loading);
+        this.submitText.textContent = loading ? 'Signing In...' : 'Sign In';
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+        
+        // Clear previous alerts
+        this.alertContainer.innerHTML = '';
+        
+        // Validate form
+        const isEmailValid = this.validateEmail();
+        const isPasswordValid = this.validatePassword();
+        
+        if (!isEmailValid || !isPasswordValid) {
+          this.showAlert('Please correct the errors above');
+          return;
+        }
+
+        this.setLoading(true);
+        
+        try {
+          // Simulate API call
+          const result = await this.authenticateUser({
+            email: this.emailInput.value.trim(),
+            password: this.passwordInput.value
+          });
+          
+          if (result.success) {
+            this.showAlert('Sign in successful! Redirecting...', 'success');
+            
+            // Save email for next time
+            localStorage.setItem('foodcare_saved_email', this.emailInput.value.trim());
+            
+            // Store user session
+            localStorage.setItem('foodcare_user', JSON.stringify(result.user));
+            
+            // Redirect after delay
+            setTimeout(() => {
+              this.redirectToProfile();
+            }, 1500);
+          } else {
+            this.showAlert(result.message);
+          }
+        } catch (error) {
+          this.showAlert('Network error. Please try again.');
+        } finally {
+          this.setLoading(false);
+        }
+      }
+
+      async authenticateUser({ email, password }) {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Demo users for testing
+        const demoUsers = [
+          { email: 'demo@foodcare.com', password: 'demo123', name: 'Demo User', role: 'donor' },
+          { email: 'ngo@foodcare.com', password: 'ngo123', name: 'NGO Manager', role: 'ngo' },
+          { email: 'admin@foodcare.com', password: 'admin123', name: 'Admin User', role: 'admin' }
+        ];
+        
+        const user = demoUsers.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+          return {
+            success: true,
+            user: {
+              id: Math.random().toString(36).substr(2, 9),
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              joinDate: new Date().toISOString()
+            }
+          };
+        }
+        
+        return {
+          success: false,
+          message: 'Invalid email or password. Try demo@foodcare.com / demo123'
+        };
+      }
+
+      handleForgotPassword(e) {
+        e.preventDefault();
+        
+        const email = this.emailInput.value.trim();
+        
+        if (!email) {
+          this.showAlert('Please enter your email address first');
+          this.emailInput.focus();
+          return;
+        }
+        
+        if (!this.validateEmail()) {
+          return;
+        }
+        
+        // Simulate sending reset email
+        this.showAlert(`Password reset instructions sent to ${email}`, 'success');
+      }
+
+      redirectToProfile() {
+        // In a real app, this would redirect to the actual profile page
+        window.location.href = '#profile';
+        
+        // For demo purposes, show a modal or update the page
+        document.body.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <div style="background: white; padding: 3rem; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);">
+              <h1 style="color: #667eea; margin-bottom: 1rem;">🎉 Welcome to FoodCare!</h1>
+              <p style="color: #666; margin-bottom: 2rem;">You've successfully signed in to your account.</p>
+              <button onclick="location.reload()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 0.875rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                Back to Sign In
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Initialize the authentication system when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new FoodCareAuth();
+      
+      // Add some interactive animations
+      const inputs = document.querySelectorAll('.input');
+      inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+          input.parentElement.style.transform = 'scale(1.02)';
+          input.parentElement.style.transition = 'transform 0.2s ease';
+        });
+        
+        input.addEventListener('blur', () => {
+          input.parentElement.style.transform = 'scale(1)';
+        });
+      });
+      
+      // Add navigation hover effects
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          link.style.transform = 'translateY(-2px)';
+        });
+        
+        link.addEventListener('mouseleave', () => {
+          link.style.transform = 'translateY(0)';
+        });
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('LoginForm').dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>

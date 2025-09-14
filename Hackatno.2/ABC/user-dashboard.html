@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | FoodCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;color:#2c3e50;
+    }
+    .header{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.2);
+      position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .header-content{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;}
+    .logo{font-size:1.8rem;font-weight:700;color:#e74c3c;text-decoration:none;}
+    .nav-menu{display:flex;list-style:none;gap:2rem;align-items:center;}
+    .nav-menu a{text-decoration:none;color:#2c3e50;font-weight:500;transition:.3s;}
+    .nav-menu a:hover{color:#e74c3c;}
+    .main-content{max-width:1400px;margin:0 auto;padding:2rem;}
+
+    /* User Type Toggle */
+    .demo-toggle{position:fixed;top:100px;right:20px;z-index:1000;background:rgba(255,255,255,0.95);padding:1rem;border-radius:15px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.1);backdrop-filter:blur(20px);}
+    .demo-toggle button{padding:0.5rem 1rem;margin:0.25rem;border:none;border-radius:8px;cursor:pointer;font-weight:500;transition:all 0.3s;}
+    .demo-toggle .active{background:#e74c3c;color:white;}
+    .demo-toggle .inactive{background:#f8f9fa;color:#6c757d;}
+
+    /* Dashboard Header */
+    .dashboard-header{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:25px;padding:2rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:2rem;}
+    .user-welcome{flex:1;min-width:300px;}
+    .welcome-title{font-size:2.5rem;font-weight:700;color:#2c3e50;margin-bottom:0.5rem;}
+    .welcome-subtitle{color:#6c757d;font-size:1.1rem;margin-bottom:1rem;}
+    .last-login{color:#95a5a6;font-size:0.9rem;}
+    .user-avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#e74c3c 0%,#c0392b 100%);
+      display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:white;box-shadow:0 8px 25px rgba(231,76,60,0.3);}
+    
+    /* Quick Actions */
+    .quick-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;}
+    .quick-btn{padding:0.7rem 1.5rem;border:2px solid #e74c3c;background:transparent;color:#e74c3c;border-radius:25px;
+      cursor:pointer;transition:all 0.3s;font-weight:600;text-decoration:none;display:inline-block;}
+    .quick-btn:hover{background:#e74c3c;color:white;transform:translateY(-2px);}
+    .quick-btn.primary{background:#e74c3c;color:white;}
+    .quick-btn.primary:hover{background:#c0392b;}
+
+    /* Dashboard Grid */
+    .dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;}
+    
+    /* Quick Stats */
+    .quick-stats{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .section-title{font-size:1.4rem;font-weight:700;color:#2c3e50;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+    .stat-item{text-align:center;padding:1rem;border-radius:15px;background:linear-gradient(135deg,rgba(231,76,60,0.08) 0%,rgba(192,57,43,0.08) 100%);
+      border:1px solid rgba(231,76,60,0.15);}
+    .stat-number{font-size:1.8rem;font-weight:700;color:#e74c3c;margin-bottom:0.25rem;}
+    .stat-label{color:#6c757d;font-size:0.85rem;font-weight:500;}
+
+    /* Activity Feed */
+    .activity-feed{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .activity-item{display:flex;align-items:center;gap:1rem;padding:1rem 0;border-bottom:1px solid #f1f3f4;}
+    .activity-item:last-child{border-bottom:none;}
+    .activity-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem;flex-shrink:0;}
+    .activity-icon.success{background:linear-gradient(135deg,#00d2ff 0%,#3a7bd5 100%);color:white;}
+    .activity-icon.pending{background:linear-gradient(135deg,#ffeaa7 0%,#fab1a0 100%);color:#2d3436;}
+    .activity-icon.preparing{background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%);color:#2d3436;}
+    .activity-content{flex:1;}
+    .activity-title{font-weight:600;color:#2c3e50;font-size:0.95rem;}
+    .activity-desc{color:#6c757d;font-size:0.85rem;margin-top:0.25rem;}
+    .activity-time{color:#95a5a6;font-size:0.8rem;font-weight:500;}
+
+    /* Upcoming & Recent */
+    .two-column{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;}
+    .card{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    
+    .upcoming-item{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid #f1f3f4;}
+    .upcoming-item:last-child{border-bottom:none;}
+    .upcoming-info h4{font-weight:600;color:#2c3e50;font-size:0.95rem;}
+    .upcoming-info p{color:#6c757d;font-size:0.85rem;margin-top:0.25rem;}
+    .upcoming-time{text-align:right;}
+    .time-badge{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);color:#2d3436;padding:0.3rem 0.8rem;
+      border-radius:15px;font-size:0.8rem;font-weight:600;}
+    .eta{color:#6c757d;font-size:0.75rem;margin-top:0.25rem;}
+
+    .recent-item{display:flex;align-items:center;gap:1rem;padding:1rem 0;border-bottom:1px solid #f1f3f4;}
+    .recent-item:last-child{border-bottom:none;}
+    .recent-icon{width:35px;height:35px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#84fab0 0%,#8fd3f4 100%);color:#2d3436;font-size:1rem;}
+    .recent-details h4{font-weight:600;color:#2c3e50;font-size:0.9rem;}
+    .recent-details p{color:#6c757d;font-size:0.8rem;margin-top:0.15rem;}
+    .recent-impact{margin-left:auto;text-align:right;}
+    .impact-number{font-weight:700;color:#e74c3c;font-size:0.9rem;}
+    .impact-text{color:#6c757d;font-size:0.75rem;}
+
+    /* Impact Summary */
+    .impact-summary{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:2rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .impact-header{text-align:center;margin-bottom:2rem;}
+    .impact-highlight{font-size:2.5rem;font-weight:700;color:#e74c3c;margin-bottom:0.5rem;}
+    .impact-description{color:#6c757d;font-size:1.1rem;}
+    .impact-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;}
+    .breakdown-item{text-align:center;padding:1.5rem;border-radius:15px;background:linear-gradient(135deg,rgba(40,167,69,0.1) 0%,rgba(25,135,84,0.1) 100%);
+      border:1px solid rgba(40,167,69,0.2);}
+    .breakdown-icon{font-size:2rem;margin-bottom:0.5rem;}
+    .breakdown-number{font-size:1.5rem;font-weight:700;color:#198754;margin-bottom:0.25rem;}
+    .breakdown-label{color:#6c757d;font-size:0.85rem;font-weight:500;}
+
+    /* New User Content */
+    .new-user-dashboard{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:25px;padding:3rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);text-align:center;}
+    .new-user-icon{font-size:4rem;margin-bottom:1.5rem;}
+    .new-user-title{font-size:2.2rem;font-weight:700;color:#2c3e50;margin-bottom:1rem;}
+    .new-user-message{font-size:1.1rem;color:#6c757d;margin-bottom:2rem;line-height:1.6;}
+    .get-started-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;margin-top:2rem;}
+    .start-card{padding:2rem;border-radius:20px;border:2px solid rgba(231,76,60,0.2);
+      background:linear-gradient(135deg,rgba(231,76,60,0.05) 0%,rgba(192,57,43,0.05) 100%);text-align:center;transition:transform 0.3s;}
+    .start-card:hover{transform:translateY(-5px);}
+    .start-icon{font-size:3rem;margin-bottom:1rem;}
+    .start-title{font-size:1.3rem;font-weight:700;color:#2c3e50;margin-bottom:1rem;}
+    .start-description{color:#6c757d;font-size:0.95rem;margin-bottom:1.5rem;}
+    .start-btn{background:linear-gradient(135deg,#e74c3c 0%,#c0392b 100%);color:white;padding:0.8rem 1.5rem;
+      border:none;border-radius:25px;font-weight:600;cursor:pointer;transition:transform 0.3s;text-decoration:none;display:inline-block;}
+    .start-btn:hover{transform:translateY(-2px);}
+
+    /* Tips Section */
+    .tips-section{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .tip-item{display:flex;align-items:center;gap:1rem;padding:1rem 0;border-bottom:1px solid #f1f3f4;}
+    .tip-item:last-child{border-bottom:none;}
+    .tip-icon{font-size:1.5rem;}
+    .tip-content h4{color:#2c3e50;font-weight:600;margin-bottom:0.25rem;}
+    .tip-content p{color:#6c757d;font-size:0.9rem;}
+
+    /* Hidden content classes */
+    .new-user-content{display:block;}
+    .existing-user-content{display:none;}
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .dashboard-grid{grid-template-columns:1fr;}
+      .two-column{grid-template-columns:1fr;}
+    }
+    @media (max-width: 768px) {
+      .demo-toggle{position:relative;top:0;right:0;margin-bottom:2rem;}
+      .dashboard-header{flex-direction:column;text-align:center;}
+      .stats-grid{grid-template-columns:1fr;}
+      .get-started-section{grid-template-columns:1fr;}
+      .impact-breakdown{grid-template-columns:repeat(2,1fr);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Demo Toggle -->
+  <!-- <div class="demo-toggle">
+    <div style="font-size:0.8rem;margin-bottom:0.5rem;color:#6c757d;">Dashboard View:</div>
+    <button class="active" onclick="toggleUserType('new')">New User</button>
+    <button class="inactive" onclick="toggleUserType('existing')">Existing User</button>
+  </div> -->
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a class="logo" href="index.html">🍽️ FoodCare</a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="track.html">Track Orders</a></li>
+          <li><a href="my-donation.html">My Donations</a></li>
+          <li><a href="user-dashboard.html">User Donations</a></li>
+          <li><a href="ngo.html">NGO</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+      <div class="user-welcome">
+        <h1 class="welcome-title new-user-content">Welcome, Arjun! 👋</h1>
+        <h1 class="welcome-title existing-user-content">Welcome back, Arjun! 👋</h1>
+        <p class="welcome-subtitle new-user-content">Ready to start making a difference? Your food donation journey begins here.</p>
+        <p class="welcome-subtitle existing-user-content">Here's your impact overview and recent activity.</p>
+        <p class="last-login existing-user-content">Last login: Today at 2:30 PM</p>
+        
+        <div class="quick-actions">
+          <a href="donate.html" class="quick-btn primary new-user-content">🚀 Start Donating</a>
+          <a href="donate.html" class="quick-btn primary existing-user-content">💝 New Donation</a>
+          <a href="track-donations.html" class="quick-btn existing-user-content">📋 Track Orders</a>
+          <a href="my-donations.html" class="quick-btn">📊 View History</a>
+          <a href="#" class="quick-btn existing-user-content">⚙️ Settings</a>
+        </div>
+      </div>
+      <div class="user-avatar-large">AK</div>
+    </section>
+
+    <!-- NEW USER CONTENT -->
+    <div class="new-user-content">
+      <!-- New User Dashboard -->
+      <section class="new-user-dashboard">
+        <div class="new-user-icon">🌟</div>
+        <h2 class="new-user-title">Your Impact Journey Starts Here</h2>
+        <p class="new-user-message">
+          Welcome to FoodCare! You're about to join thousands of people making a real difference in their communities. 
+          Every donation helps feed families, support children, and provide hope to those in need.
+        </p>
+        
+        <div class="get-started-section">
+          <div class="start-card">
+            <div class="start-icon">🍽️</div>
+            <h3 class="start-title">Make Your First Donation</h3>
+            <p class="start-description">Choose from cooked meals, grocery kits, or fresh produce. Every contribution makes an immediate impact.</p>
+            <a href="donate.html" class="start-btn">Donate Now</a>
+          </div>
+          
+          <div class="start-card">
+            <div class="start-icon">🏢</div>
+            <h3 class="start-title">Explore NGO Partners</h3>
+            <p class="start-description">Learn about our verified NGO partners and see how they're helping communities across Nashik.</p>
+            <a href="ngo.html" class="start-btn">View NGOs</a>
+          </div>
+          
+          <div class="start-card">
+            <div class="start-icon">📖</div>
+            <h3 class="start-title">Learn How It Works</h3>
+            <p class="start-description">Understand our donation process and see examples of the impact you can make.</p>
+            <a href="about.html" class="start-btn">Learn More</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tips for New Users -->
+      <section class="tips-section">
+        <h2 class="section-title">💡 Getting Started Tips</h2>
+        <div class="tip-item">
+          <span class="tip-icon">💰</span>
+          <div class="tip-content">
+            <h4>Start Small, Think Big</h4>
+            <p>Your first donation can be as little as ₹500. Every contribution helps feed hungry families.</p>
+          </div>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">📍</span>
+          <div class="tip-content">
+            <h4>Choose Local NGOs</h4>
+            <p>Support organizations in your area to see the direct impact in your community.</p>
+          </div>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">📱</span>
+          <div class="tip-content">
+            <h4>Track Your Impact</h4>
+            <p>Use our tracking system to see exactly how your donations are being used and who you've helped.</p>
+          </div>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">🔄</span>
+          <div class="tip-content">
+            <h4>Make It Regular</h4>
+            <p>Consider making monthly donations to provide consistent support to communities in need.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- EXISTING USER CONTENT -->
+    <div class="existing-user-content">
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Quick Stats -->
+        <section class="quick-stats">
+          <h2 class="section-title">📊 Quick Stats</h2>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">18</div>
+              <div class="stat-label">Total Donations</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">2,847</div>
+              <div class="stat-label">People Fed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">₹45,680</div>
+              <div class="stat-label">Total Contributed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">7</div>
+              <div class="stat-label">Month Streak</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Feed -->
+        <section class="activity-feed">
+          <h2 class="section-title">📈 Recent Activity</h2>
+          <div class="activity-item">
+            <div class="activity-icon success">✓</div>
+            <div class="activity-content">
+              <div class="activity-title">Monthly Grocery Kits Delivered</div>
+              <div class="activity-desc">40 families received essential supplies</div>
+            </div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+          <div class="activity-item pending">
+            <div class="activity-icon pending">⏳</div>
+            <div class="activity-content">
+              <div class="activity-title">Biryani Distribution Confirmed</div>
+              <div class="activity-desc">300 portions preparing for evening distribution</div>
+            </div>
+            <div class="activity-time">4 hours ago</div>
+          </div>
+          <div class="activity-item preparing">
+            <div class="activity-icon preparing">👨‍🍳</div>
+            <div class="activity-content">
+              <div class="activity-title">Fresh Vegetables Being Sorted</div>
+              <div class="activity-desc">50kg mixed vegetables for 80 families</div>
+            </div>
+            <div class="activity-time">Yesterday</div>
+          </div>
+          <div class="activity-item success">
+            <div class="activity-icon success">✓</div>
+            <div class="activity-content">
+              <div class="activity-title">Emergency Relief Delivered</div>
+              <div class="activity-desc">Critical support reached flood-affected families</div>
+            </div>
+            <div class="activity-time">2 days ago</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Upcoming & Recent -->
+      <div class="two-column">
+        <!-- Upcoming Deliveries -->
+        <section class="card">
+          <h2 class="section-title">🚚 Upcoming Deliveries</h2>
+          <div class="upcoming-item">
+            <div class="upcoming-info">
+              <h4>Cooked Biryani Distribution</h4>
+              <p>Street Aid Network • 300 portions</p>
+            </div>
+            <div class="upcoming-time">
+              <div class="time-badge">Today 6 PM</div>
+              <div class="eta">Ready for pickup</div>
+            </div>
+          </div>
+          <div class="upcoming-item">
+            <div class="upcoming-info">
+              <h4>Fresh Vegetable Baskets</h4>
+              <p>Seva Society • 50kg mixed vegetables</p>
+            </div>
+            <div class="upcoming-time">
+              <div class="time-badge">Tomorrow</div>
+              <div class="eta">2-3 hours prep time</div>
+            </div>
+          </div>
+          <div class="upcoming-item">
+            <div class="upcoming-info">
+              <h4>School Feeding Program</h4>
+              <p>Education Support • 200 mid-day meals</p>
+            </div>
+            <div class="upcoming-time">
+              <div class="time-badge">Sept 16</div>
+              <div class="eta">Scheduled delivery</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Impact -->
+        <section class="card">
+          <h2 class="section-title">🎯 Recent Impact</h2>
+          <div class="recent-item">
+            <div class="recent-icon">🍛</div>
+            <div class="recent-details">
+              <h4>Monthly Grocery Kits</h4>
+              <p>Hope Foundation • Sept 12</p>
+            </div>
+            <div class="recent-impact">
+              <div class="impact-number">120 people</div>
+              <div class="impact-text">fed</div>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon">🥗</div>
+            <div class="recent-details">
+              <h4>Fresh Vegetables</h4>
+              <p>Seva Society • Sept 10</p>
+            </div>
+            <div class="recent-impact">
+              <div class="impact-number">80 people</div>
+              <div class="impact-text">nourished</div>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon">🚨</div>
+            <div class="recent-details">
+              <h4>Flood Relief Pack</h4>
+              <p>Disaster Relief • Sept 8</p>
+            </div>
+            <div class="recent-impact">
+              <div class="impact-number">200 victims</div>
+              <div class="impact-text">helped</div>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon">🍽️</div>
+            <div class="recent-details">
+              <h4>Community Lunch</h4>
+              <p>Community Kitchen • Sept 5</p>
+            </div>
+            <div class="recent-impact">
+              <div class="impact-number">150 meals</div>
+              <div class="impact-text">served</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Impact Summary -->
+      <section class="impact-summary">
+        <div class="impact-header">
+          <div class="impact-highlight">2,847</div>
+          <div class="impact-description">Total people you've helped feed this year</div>
+        </div>
+        <div class="impact-breakdown">
+          <div class="breakdown-item">
+            <div class="breakdown-icon">👶</div>
+            <div class="breakdown-number">847</div>
+            <div class="breakdown-label">Children Fed</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-icon">👴</div>
+            <div class="breakdown-number">312</div>
+            <div class="breakdown-label">Elderly Supported</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-icon">🏠</div>
+            <div class="breakdown-number">127</div>
+            <div class="breakdown-label">Families Helped</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-icon">🚨</div>
+            <div class="breakdown-number">3</div>
+            <div class="breakdown-label">Emergency Relief</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-icon">🍽️</div>
+            <div class="breakdown-number">4,521</div>
+            <div class="breakdown-label">Total Meals</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Counter animation for stats
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number, .impact-highlight, .breakdown-number');
+      counters.forEach(counter => {
+        const target = parseInt(counter.textContent.replace(/[₹,]/g, ''));
+        if (target) {
+          let current = 0;
+          const increment = target / 50;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            if (counter.textContent.includes('₹')) {
+              counter.textContent = '₹' + Math.floor(current).toLocaleString();
+            } else {
+              counter.textContent = Math.floor(current).toLocaleString();
+            }
+          }, 30);
+        }
+      });
+    }
+
+    // Animate cards on load
+    window.addEventListener('load', () => {
+      const cards = document.querySelectorAll('.card, .quick-stats, .activity-feed, .start-card, .impact-summary');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'all 0.6s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+
+      // Start counter animation after cards load
+      setTimeout(animateCounters, 500);
+    });
+
+    // Real-time activity simulation
+    setInterval(() => {
+      const activityIcons = document.querySelectorAll('.activity-icon.pending');
+      activityIcons.forEach(icon => {
+        icon.style.transform = icon.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+      });
+    }, 2000);
+
+    // Add hover effects to quick actions
+    document.querySelectorAll('.quick-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.boxShadow = '0 8px 25px rgba(231, 76, 60, 0.3)';
+      });
+      
+      btn.addEventListener('mouseleave', () => {
+        btn.style.boxShadow = 'none';
+      });
+    });
+
+    // Add pulse effect to new donation button
+    const newDonationBtn = document.querySelector('.quick-btn.primary');
+    if (newDonationBtn) {
+      setInterval(() => {
+        newDonationBtn.style.animation = 'pulse 1.5s ease-in-out';
+        setTimeout(() => {
+          newDonationBtn.style.animation = '';
+        }, 1500);
+      }, 5000);
+    }
+  </script>
+
+  <style>
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Food Donations | FoodCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;color:#2c3e50;
+    }
+    .header{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.2);
+      position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .header-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;}
+    .logo{font-size:1.8rem;font-weight:700;color:#e74c3c;text-decoration:none;}
+    .nav-menu{display:flex;list-style:none;gap:2rem;align-items:center;}
+    .nav-menu a{text-decoration:none;color:#2c3e50;font-weight:500;transition:.3s;}
+    .nav-menu a:hover{color:#e74c3c;}
+    .main-content{max-width:1200px;margin:0 auto;padding:2rem;}
+
+    /* Hero Section */
+    .hero-section{text-align:center;margin-bottom:3rem;}
+    .page-title{color:white;font-size:3rem;font-weight:700;text-shadow:2px 2px 4px rgba(0,0,0,.3);margin-bottom:1rem;}
+    .page-subtitle{color:rgba(255,255,255,0.9);font-size:1.2rem;margin-bottom:2rem;}
+    .user-badge{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:25px;padding:1rem 2rem;
+      display:inline-flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .user-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#e74c3c 0%,#c0392b 100%);
+      display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:white;}
+    .user-info h3{font-size:1.3rem;color:#2c3e50;margin-bottom:0.25rem;}
+    .user-info p{color:#6c757d;font-size:0.9rem;}
+
+    /* Impact Overview */
+    .impact-overview{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:25px;padding:2rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .impact-title{text-align:center;font-size:1.8rem;color:#2c3e50;margin-bottom:2rem;font-weight:700;}
+    .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;}
+    .impact-card{text-align:center;padding:1.5rem;background:linear-gradient(135deg,rgba(231,76,60,0.1) 0%,rgba(192,57,43,0.1) 100%);
+      border-radius:20px;border:2px solid rgba(231,76,60,0.2);transition:transform 0.3s;}
+    .impact-card:hover{transform:translateY(-5px);}
+    .impact-icon{font-size:2.5rem;margin-bottom:1rem;}
+    .impact-number{font-size:2.5rem;font-weight:700;color:#e74c3c;margin-bottom:0.5rem;}
+    .impact-label{color:#6c757d;font-weight:600;font-size:1rem;}
+    .impact-sublabel{color:#95a5a6;font-size:0.8rem;margin-top:0.25rem;}
+
+    /* Stats Cards */
+    .stats-section{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem;}
+    .stat-card{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);position:relative;overflow:hidden;}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e74c3c 0%,#c0392b 100%);}
+    .stat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+    .stat-title{font-size:1.1rem;font-weight:600;color:#2c3e50;}
+    .stat-icon{font-size:1.5rem;}
+    .stat-value{font-size:2.2rem;font-weight:700;color:#e74c3c;margin-bottom:0.5rem;}
+    .stat-description{color:#6c757d;font-size:0.9rem;}
+    .stat-trend{display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;font-size:0.8rem;}
+    .trend-up{color:#28a745;}
+    .trend-neutral{color:#6c757d;}
+
+    /* Filter and Sort */
+    .controls-section{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;margin-bottom:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .controls-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .filter-buttons{display:flex;gap:0.5rem;flex-wrap:wrap;}
+    .filter-btn{padding:0.5rem 1rem;border:2px solid #e74c3c;background:transparent;color:#e74c3c;border-radius:25px;
+      cursor:pointer;transition:all 0.3s;font-weight:500;font-size:0.9rem;}
+    .filter-btn:hover,.filter-btn.active{background:#e74c3c;color:white;}
+    .sort-section{display:flex;align-items:center;gap:1rem;}
+    .sort-select{padding:0.5rem 1rem;border:2px solid #e74c3c;border-radius:10px;background:white;color:#2c3e50;font-weight:500;}
+
+    /* Donation History */
+    .donations-section{display:grid;gap:1.5rem;}
+    .donation-item{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:1.5rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);transition:all 0.3s;}
+    .donation-item:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.15);}
+
+    .donation-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;}
+    .donation-main{flex:1;min-width:250px;}
+    .donation-title{font-size:1.3rem;font-weight:700;color:#2c3e50;margin-bottom:0.5rem;}
+    .donation-meta{display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem;color:#6c757d;}
+    .donation-amount{background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:white;padding:0.5rem 1rem;
+      border-radius:15px;font-weight:600;font-size:1rem;}
+
+    .donation-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1rem 0;}
+    .detail-group{text-align:center;}
+    .detail-label{font-size:0.8rem;color:#6c757d;text-transform:uppercase;font-weight:600;letter-spacing:0.5px;}
+    .detail-value{font-size:1rem;font-weight:600;color:#2c3e50;margin-top:0.25rem;}
+
+    .donation-impact{background:linear-gradient(135deg,rgba(40,167,69,0.1) 0%,rgba(25,135,84,0.1) 100%);
+      padding:1rem;border-radius:15px;margin-top:1rem;text-align:center;}
+    .impact-text{font-weight:600;color:#198754;font-size:1.1rem;}
+    .impact-details{color:#6c757d;font-size:0.9rem;margin-top:0.25rem;}
+
+    /* Achievement Badges */
+    .achievements-section{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:2rem;margin-top:2rem;
+      border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .achievements-title{font-size:1.6rem;font-weight:700;color:#2c3e50;margin-bottom:1.5rem;text-align:center;}
+    .badges-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;}
+    .badge{text-align:center;padding:1rem;border-radius:15px;transition:transform 0.3s;}
+    .badge:hover{transform:scale(1.05);}
+    .badge.earned{background:linear-gradient(135deg,#ffd700 0%,#ffed4e 100%);color:#2c3e50;}
+    .badge.locked{background:#f8f9fa;color:#6c757d;opacity:0.6;}
+    .badge-icon{font-size:2rem;margin-bottom:0.5rem;}
+    .badge-name{font-size:0.8rem;font-weight:600;}
+    .badge-requirement{font-size:0.7rem;margin-top:0.25rem;}
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-title{font-size:2.2rem;}
+      .user-badge{flex-direction:column;text-align:center;}
+      .controls-header{flex-direction:column;align-items:stretch;}
+      .donation-header{flex-direction:column;}
+      .donation-amount{align-self:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a class="logo" href="index.html">🍽️ FoodCare</a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Share Food</a></li>
+          <li><a href="track.html">Track Donations</a></li>
+          <li><a href="my-donation.html">My Contributions</a></li>
+          <li><a href="ngo.html">NGO Partners</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1 class="page-title">My Food Contributions</h1>
+      <p class="page-subtitle">Your journey of sharing meals and spreading kindness in the community</p>
+      
+      <div class="user-badge">
+        <div class="user-avatar">AK</div>
+        <div class="user-info">
+          <h3>Arjun Kumar</h3>
+          <p>Food Sharing Hero • Member since Jan 2024</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Overview -->
+    <section class="impact-overview">
+      <h2 class="impact-title">🌟 Your Impact So Far</h2>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-icon">👥</div>
+          <div class="impact-number">2,847</div>
+          <div class="impact-label">People Fed</div>
+          <div class="impact-sublabel">Across 18 donations</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">🍽️</div>
+          <div class="impact-number">4,521</div>
+          <div class="impact-label">Meals Shared</div>
+          <div class="impact-sublabel">Including 847 children</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">🏠</div>
+          <div class="impact-number">127</div>
+          <div class="impact-label">Families Helped</div>
+          <div class="impact-sublabel">Emergency & regular support</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">🤝</div>
+          <div class="impact-number">12</div>
+          <div class="impact-label">NGO Partners</div>
+          <div class="impact-sublabel">Across Nashik region</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Cards -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Food Contributions</span>
+          <span class="stat-icon">🥘</span>
+        </div>
+        <div class="stat-value">456kg</div>
+        <div class="stat-description">Total food shared</div>
+        <div class="stat-trend">
+          <span class="trend-up">↗ +12% from last month</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">This Month</span>
+          <span class="stat-icon">📅</span>
+        </div>
+        <div class="stat-value">32kg</div>
+        <div class="stat-description">September contributions</div>
+        <div class="stat-trend">
+          <span class="trend-up">↗ 4 donations made</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Sharing Streak</span>
+          <span class="stat-icon">🔥</span>
+        </div>
+        <div class="stat-value">7</div>
+        <div class="stat-description">Consecutive months</div>
+        <div class="stat-trend">
+          <span class="trend-neutral">Keep it up!</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Average Impact</span>
+          <span class="stat-icon">📊</span>
+        </div>
+        <div class="stat-value">158</div>
+        <div class="stat-description">People per donation</div>
+        <div class="stat-trend">
+          <span class="trend-up">↗ Above platform average</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls-section">
+      <div class="controls-header">
+        <div class="filter-buttons">
+          <button class="filter-btn active" onclick="filterDonations('all')">All Donations</button>
+          <button class="filter-btn" onclick="filterDonations('food')">Fresh Food</button>
+          <button class="filter-btn" onclick="filterDonations('cooked')">Cooked Meals</button>
+          <button class="filter-btn" onclick="filterDonations('groceries')">Groceries</button>
+          <button class="filter-btn" onclick="filterDonations('emergency')">Emergency Relief</button>
+        </div>
+        
+        <div class="sort-section">
+          <span>Sort by:</span>
+          <select class="sort-select" onchange="sortDonations(this.value)">
+            <option value="date-desc">Latest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="amount-desc">Largest Quantity</option>
+            <option value="impact-desc">Highest Impact</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Donation History -->
+    <section class="donations-section">
+      
+      <!-- Donation 1 -->
+      <div class="donation-item" data-type="cooked" data-date="2025-09-14" data-amount="15" data-impact="300">
+        <div class="donation-header">
+          <div class="donation-main">
+            <h3 class="donation-title">Cooked Biryani Distribution</h3>
+            <div class="donation-meta">
+              <span>📅 Sept 14, 2025</span>
+              <span>🏢 Street Aid Network</span>
+              <span>📍 Nashik Central</span>
+            </div>
+          </div>
+          <div class="donation-amount">FREE</div>
+        </div>
+        
+        <div class="donation-details">
+          <div class="detail-group">
+            <div class="detail-label">Meal Type</div>
+            <div class="detail-value">Chicken Biryani</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Quantity</div>
+            <div class="detail-value">15kg (300 portions)</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Preparing</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">Street Distribution</div>
+          </div>
+        </div>
+        
+        <div class="donation-impact">
+          <div class="impact-text">🎯 Expected to feed 300 people today evening</div>
+          <div class="impact-details">Including 75+ children and elderly • Hot meals for homeless community</div>
+        </div>
+      </div>
+
+      <!-- Donation 2 -->
+      <div class="donation-item" data-type="groceries" data-date="2025-09-12" data-amount="80" data-impact="120">
+        <div class="donation-header">
+          <div class="donation-main">
+            <h3 class="donation-title">Monthly Grocery Distribution</h3>
+            <div class="donation-meta">
+              <span>📅 Sept 12, 2025</span>
+              <span>🏢 Hope Foundation</span>
+              <span>📍 Panchvati Area</span>
+            </div>
+          </div>
+          <div class="donation-amount">FREE</div>
+        </div>
+        
+        <div class="donation-details">
+          <div class="detail-group">
+            <div class="detail-label">Items Shared</div>
+            <div class="detail-value">Rice, Dal, Oil, Spices</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Quantity</div>
+            <div class="detail-value">80kg total</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Delivered ✅</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Families</div>
+            <div class="detail-value">40 families</div>
+          </div>
+        </div>
+        
+        <div class="donation-impact">
+          <div class="impact-text">✨ Successfully provided food security for 120 people</div>
+          <div class="impact-details">40 families received monthly essentials • Includes 48 children under 12</div>
+        </div>
+      </div>
+
+      <!-- Donation 3 -->
+      <div class="donation-item" data-type="food" data-date="2025-09-10" data-amount="50" data-impact="80">
+        <div class="donation-header">
+          <div class="donation-main">
+            <h3 class="donation-title">Fresh Vegetable Distribution</h3>
+            <div class="donation-meta">
+              <span>📅 Sept 10, 2025</span>
+              <span>🏢 Seva Society</span>
+              <span>📍 Old Nashik</span>
+            </div>
+          </div>
+          <div class="donation-amount">FREE</div>
+        </div>
+        
+        <div class="donation-details">
+          <div class="detail-group">
+            <div class="detail-label">Items</div>
+            <div class="detail-value">Mixed Vegetables</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Weight</div>
+            <div class="detail-value">50 kg</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Delivered ✅</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Beneficiaries</div>
+            <div class="detail-value">80 people</div>
+          </div>
+        </div>
+        
+        <div class="donation-impact">
+          <div class="impact-text">🥗 Provided fresh nutrition to 80 community members</div>
+          <div class="impact-details">Seasonal vegetables shared • Enhanced nutritional diversity for families</div>
+        </div>
+      </div>
+
+      <!-- Donation 4 -->
+      <div class="donation-item" data-type="emergency" data-date="2025-09-08" data-amount="100" data-impact="200">
+        <div class="donation-header">
+          <div class="donation-main">
+            <h3 class="donation-title">Flood Relief Emergency Food</h3>
+            <div class="donation-meta">
+              <span>📅 Sept 8, 2025</span>
+              <span>🏢 Disaster Relief Network</span>
+              <span>📍 Flood Affected Area</span>
+            </div>
+          </div>
+          <div class="donation-amount">FREE</div>
+        </div>
+        
+        <div class="donation-details">
+          <div class="detail-group">
+            <div class="detail-label">Emergency Type</div>
+            <div class="detail-value">Flood Relief</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Food Kits</div>
+            <div class="detail-value">100kg supplies</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Delivered ✅</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Urgency</div>
+            <div class="detail-value">Critical Relief</div>
+          </div>
+        </div>
+        
+        <div class="donation-impact">
+          <div class="impact-text">🚨 Critical emergency food relief for 200 flood victims</div>
+          <div class="impact-details">Immediate food, water & basic supplies • Helped 50 families in crisis</div>
+        </div>
+      </div>
+
+      <!-- Donation 5 -->
+      <div class="donation-item" data-type="cooked" data-date="2025-09-05" data-amount="12" data-impact="150">
+        <div class="donation-header">
+          <div class="donation-main">
+            <h3 class="donation-title">Weekend Community Lunch</h3>
+            <div class="donation-meta">
+              <span>📅 Sept 5, 2025</span>
+              <span>🏢 Community Kitchen</span>
+              <span>📍 Samarth Nagar</span>
+            </div>
+          </div>
+          <div class="donation-amount">FREE</div>
+        </div>
+        
+        <div class="donation-details">
+          <div class="detail-group">
+            <div class="detail-label">Meal</div>
+            <div class="detail-value">Complete Thali</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Quantity</div>
+            <div class="detail-value">12kg (150 plates)</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">Delivered ✅</div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">Event</div>
+            <div class="detail-value">Weekend Special</div>
+          </div>
+        </div>
+        
+        <div class="donation-impact">
+          <div class="impact-text">🍛 Weekend community gathering with nutritious meals</div>
+          <div class="impact-details">Complete meals with rice, dal, vegetables, chapati • Community bonding event</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="achievements-section">
+      <h2 class="achievements-title">🏆 Your Achievement Badges</h2>
+      <div class="badges-grid">
+        <div class="badge earned">
+          <div class="badge-icon">🌟</div>
+          <div class="badge-name">First Sharing</div>
+          <div class="badge-requirement">Make your first food donation</div>
+        </div>
+        <div class="badge earned">
+          <div class="badge-icon">🔥</div>
+          <div class="badge-name">Monthly Sharer</div>
+          <div class="badge-requirement">Share food for 3 months</div>
+        </div>
+        <div class="badge earned">
+          <div class="badge-icon">👥</div>
+          <div class="badge-name">Community Hero</div>
+          <div class="badge-requirement">Help 1000+ people</div>
+        </div>
+        <div class="badge earned">
+          <div class="badge-icon">🍽️</div>
+          <div class="badge-name">Meal Master</div>
+          <div class="badge-requirement">Provide 2500+ meals</div>
+        </div>
+        <div class="badge earned">
+          <div class="badge-icon">🚨</div>
+          <div class="badge-name">Emergency Helper</div>
+          <div class="badge-requirement">Help in emergency relief</div>
+        </div>
+        <div class="badge locked">
+          <div class="badge-icon">💎</div>
+          <div class="badge-name">Sharing Legend</div>
+          <div class="badge-requirement">Share 500kg+ food</div>
+        </div>
+        <div class="badge locked">
+          <div class="badge-icon">🎯</div>
+          <div class="badge-name">Impact Champion</div>
+          <div class="badge-requirement">Help 5000+ people</div>
+        </div>
+        <div class="badge locked">
+          <div class="badge-icon">⚡</div>
+          <div class="badge-name">Year-Long Supporter</div>
+          <div class="badge-requirement">12 months streak</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function filterDonations(type) {
+      // Update active button
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Filter donations
+      document.querySelectorAll('.donation-item').forEach(item => {
+        if (type === 'all') {
+          item.style.display = 'block';
+        } else {
+          item.style.display = item.dataset.type === type ? 'block' : 'none';
+        }
+      });
+    }
+
+    function sortDonations(criteria) {
+      const container = document.querySelector('.donations-section');
+      const items = Array.from(container.querySelectorAll('.donation-item'));
+      
+      items.sort((a, b) => {
+        switch (criteria) {
+          case 'date-desc':
+            return new Date(b.dataset.date) - new Date(a.dataset.date);
+          case 'date-asc':
+            return new Date(a.dataset.date) - new Date(b.dataset.date);
+          case 'amount-desc':
+            return parseInt(b.dataset.amount) - parseInt(a.dataset.amount);
+          case 'impact-desc':
+            return parseInt(b.dataset.impact) - parseInt(a.dataset.impact);
+          default:
+            return 0;
+        }
+      });
+      
+      // Re-append sorted items
+      items.forEach(item => container.appendChild(item));
+    }
+
+    // Add some animation on load
+    window.addEventListener('load', () => {
+      const cards = document.querySelectorAll('.donation-item');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'all 0.6s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
+
+    // Counter animation for impact numbers
+    function animateCounters() {
+      const counters = document.querySelectorAll('.impact-number, .stat-value');
+      counters.forEach(counter => {
+        const target = parseInt(counter.textContent.replace(/[kg,]/g, ''));
+        if (target) {
+          let current = 0;
+          const increment = target / 50;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            if (counter.textContent.includes('kg')) {
+              counter.textContent = Math.floor(current) + 'kg';
+            } else {
+              counter.textContent = Math.floor(current).toLocaleString();
+            }
+          }, 30);
+        }
+      });
+    }
+
+    // Trigger counter animation when impact section is visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    observer.observe(document.querySelector('.impact-overview'));
+
+    // Add sparkle effect to achievement badges
+    document.querySelectorAll('.badge.earned').forEach(badge => {
+      badge.addEventListener('mouseenter', () => {
+        badge.style.transform = 'scale(1.1) rotate(5deg)';
+        badge.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
+      });
+      
+      badge.addEventListener('mouseleave', () => {
+        badge.style.transform = 'scale(1.05)';
+        badge.style.boxShadow = 'none';
+      });
+    });
+  </script>
+</body>
+</html>
